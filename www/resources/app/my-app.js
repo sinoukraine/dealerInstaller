@@ -2335,6 +2335,13 @@ App.onPageInit('asset.installation.notice', function(page) {
         fitmentOptCustomWrapper.hide();
     }
 
+    // Open About popover
+    $$('.notice-popover-link').on('click', function() {
+        console.log('click');
+        var clickedLink = this;
+        App.popover('.popover-notice', clickedLink);
+    });
+
 
 
 
