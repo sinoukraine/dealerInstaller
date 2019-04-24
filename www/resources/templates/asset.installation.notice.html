@@ -37,7 +37,8 @@
                     <div class="item-inner">
                         <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG01}}<span class="color-red">*</span></div>
                         <div class="item-input">
-                            <input type="text" placeholder="{{@global.LANGUAGE.ASSET_INSTALLATION_MSG01}}" name="vinNumber" value="{{vinNumber}}" maxlength="200" class="">
+                            <input type="text" placeholder="{{@global.LANGUAGE.ASSET_INSTALLATION_MSG01}}" name="vinNumber" value="{{vinNumber}}" data-prev-val='' maxlength="17" class="">
+                            <i class="f7-icons icon-scan color-red scanBarCode"></i>
                         </div>
                     </div>
                 </li>
@@ -47,7 +48,7 @@
                         <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG02}}<span class="color-red">*</span></div>
                         <div class="item-input">
                             <input type="text" placeholder="{{@global.LANGUAGE.ASSET_INSTALLATION_MSG02}}" name="IMEI" value="{{IMEI}}" maxlength="200" class="">
-                            <i class="f7-icons icon-scan color-red scanBarCode"></i>
+
                         </div>
                     </div>
                 </li>

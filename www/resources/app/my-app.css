@@ -528,6 +528,9 @@ select {
 .item_asset_img {
     width: 60px;
     height: 60px;
+    border-radius: 60px;
+    background-color: #F96868;
+    color: white;
 }
 
 .list-block-readonly.list-block {

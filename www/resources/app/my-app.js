@@ -233,7 +233,7 @@ var App = new Framework7({
     //pushState: true,       
     allowDuplicateUrls: true,
     sortable: false,
-    modalTitle: 'QL8 Installer',
+    modalTitle: 'Dealer Installer',
     precompileTemplates: true,
     template7Pages: true,
     tapHold: false, //enable tap hold events
@@ -294,6 +294,7 @@ API_URL.URL_GET_SIM_INFO = API_DOMIAN5 + "GetSimInfo";
 API_URL.URL_GET_SIM_LIST = API_DOMIAN5 + "GetDeviceList";
 
 API_URL.URL_REFRESH_TOKEN = API_DOMIAN3 + "User/RefreshToken";
+API_URL.URL_GET_DETAILS_BY_VIN = "http://ss.sinopacific.com.ua/vin/v1/";
 
 API_URL.URL_INSTALLATION_NOTICE = 'http://api.m2mglobaltech.com/Common/v1/Activation/Install';
 API_URL.URL_VERIFY = 'https://api.m2mglobaltech.com/Common/V1/Activation/Verify';
@@ -1276,10 +1277,6 @@ App.onPageInit('asset.settings', function(page) {
         App.actions(cameraButtons);
     });
 
-    var fitmentOptSelect = $$(page.container).find('[name="FitmentOpt"]');
-    var fitmentOptSelectSet = fitmentOptSelect.data("set");
-    var fitmentOptCustomWrapper = $$(page.container).find('.fitment_opt_custom_wrapper');
-    var fitmentOptSelectedArr = [];
 
     /*var paymentType = $$(page.container).find('[name="PaymentType"]');
     var tabs = $$(page.container).find('.tab');
@@ -1289,6 +1286,51 @@ App.onPageInit('asset.settings', function(page) {
     var cardNumber = $$(page.container).find('.card_number');
     var cardHolder = $$(page.container).find('.card_holder');*/
 
+    var fitmentOptSelect = $$(page.container).find('[name="FitmentOpt"]');
+    var fitmentOptSelectSet = fitmentOptSelect.data("set");
+    var fitmentOptCustomWrapper = $$(page.container).find('.fitment_opt_custom_wrapper');
+    var fitmentOptSelectedArr = [];
+
+    var VINinputEl = $$(page.container).find('[name="Describe7"');
+
+    var makeEl = $$(page.container).find('input[name="Describe1"]');
+    var modelEl = $$(page.container).find('input[name="Describe2"]');
+    var colorEl = $$(page.container).find('input[name="Describe3"]');
+    var yearEl = $$(page.container).find('input[name="Describe4"]');
+
+
+
+
+    VINinputEl.on('blur change', function() {
+        if ($$(this).data('prev-val') != this.value) {
+            $$(this).data('prev-val', this.value);
+            getVehicleDetailsByVin({
+                VIN: this.value,
+                inputs: {
+                    Describe1: makeEl,
+                    Describe2: modelEl,
+                    Describe3: colorEl,
+                    Describe4: yearEl,
+                }
+            });
+        }
+    });
+
+    VINinputEl.on('input ', function() {
+        this.value = this.value.toUpperCase();
+        if (this.value.length == 17 && $$(this).data('prev-val') != this.value) {
+            $$(this).data('prev-val', this.value);
+            getVehicleDetailsByVin({
+                VIN: this.value,
+                inputs: {
+                    Describe1: makeEl,
+                    Describe2: modelEl,
+                    Describe3: colorEl,
+                    Describe4: yearEl,
+                }
+            });
+        }
+    });
 
     var selectUnitSpeed = $$('select[name="Unit"]');
     selectUnitSpeed.val(selectUnitSpeed.data("set"));
@@ -1528,6 +1570,13 @@ function loadPageStatusNew(data) {
             GPS: data.StatusInfo.GPS,
             GSM: data.StatusInfo.GSM,
             GPRS: data.StatusInfo.GPRS,
+            Relay: data.StatusInfo.Relay,
+            Battery: data.StatusInfo.Battery,
+            Charger: data.StatusInfo.Charger,
+            Power: data.StatusInfo.Power,
+            // Relay: data.StatusInfo.Relay,
+
+
 
         }
     });
@@ -2194,6 +2243,48 @@ App.onPageInit('asset.installation.notice', function(page) {
     let fitmentOptSelectSet = fitmentOptSelect.data("set");
     let fitmentOptCustomWrapper = $$(page.container).find('.fitment_opt_custom_wrapper');
     let fitmentOptSelectedArr = [];
+
+
+    var VINinputEl = $$(page.container).find('[name="vinNumber"');
+
+    var makeEl = $$(page.container).find('input[name="Describe1"]');
+    var modelEl = $$(page.container).find('input[name="Describe2"]');
+    var colorEl = $$(page.container).find('input[name="Describe3"]');
+    var yearEl = $$(page.container).find('input[name="Describe4"]');
+
+
+
+
+    VINinputEl.on('blur change', function() {
+        if ($$(this).data('prev-val') != this.value) {
+            $$(this).data('prev-val', this.value);
+            getVehicleDetailsByVin({
+                VIN: this.value,
+                inputs: {
+                    Describe1: makeEl,
+                    Describe2: modelEl,
+                    Describe3: colorEl,
+                    Describe4: yearEl,
+                }
+            });
+        }
+    });
+
+    VINinputEl.on('input ', function() {
+        this.value = this.value.toUpperCase();
+        if (this.value.length == 17 && $$(this).data('prev-val') != this.value) {
+            $$(this).data('prev-val', this.value);
+            getVehicleDetailsByVin({
+                VIN: this.value,
+                inputs: {
+                    Describe1: makeEl,
+                    Describe2: modelEl,
+                    Describe3: colorEl,
+                    Describe4: yearEl,
+                }
+            });
+        }
+    });
 
 
     // assettype выбор, спроверкой на тип boat или jetski 
@@ -3779,8 +3870,6 @@ function getImage() {
 
 }
 
-
-
 //Select from album
 function galleryImgs() {
     if (window.plus) {
@@ -3876,11 +3965,11 @@ function openBarCodeReader(input) {
                       "Result: " + result.text + "\n" +
                       "Format: " + result.format + "\n" +
                       "Cancelled: " + result.cancelled);*/
-
                 if (result && result.text) {
                     input.val(result.text);
                     input.change(); // fix to trigger onchange / oninput event listener
                 }
+
             },
             function(error) {
                 alert("Scanning failed: " + error);
@@ -3959,4 +4048,83 @@ function getAssetImg(params, imgFor) {
         assetImg = '<div class="item_asset_img bg-white"><div class="text-a-c vertical-center user_f_l">?</div></div>';
     }
     return assetImg;
+}
+
+
+function getVehicleDetailsByVin(params) {
+    if (params && params.VIN) {
+
+        var container = $$('body');
+        if (container.children('.progressbar, .progressbar-infinite').length) return; //don't run all this if there is a current progressbar loading
+        App.showProgressbar(container);
+
+        $.ajax({
+            type: "GET",
+            url: API_URL.URL_GET_DETAILS_BY_VIN + params.VIN,
+            dataType: 'json',
+            async: true,
+            cache: false,
+
+            success: function(result) {
+                App.hideProgressbar();
+                console.log(result);
+                if (result) {
+                    var vehicleDetailsArr = [];
+
+                    if (result.make) {
+                        vehicleDetailsArr.push({
+                            name: LANGUAGE.ASSET_SETTINGS_MSG21,
+                            value: result.make,
+                            inputName: 'Describe1',
+                        });
+                    }
+                    if (result.model) {
+                        vehicleDetailsArr.push({
+                            name: LANGUAGE.ASSET_SETTINGS_MSG22,
+                            value: result.model,
+                            inputName: 'Describe2',
+                        });
+                    }
+                    if (result.color) {
+                        vehicleDetailsArr.push({
+                            name: LANGUAGE.ASSET_SETTINGS_MSG23,
+                            value: result.color,
+                            inputName: 'Describe3',
+                        });
+                    }
+                    if (result.year) {
+                        vehicleDetailsArr.push({
+                            name: LANGUAGE.ASSET_SETTINGS_MSG24,
+                            value: result.year,
+                            inputName: 'Describe4',
+                        });
+                    }
+
+                    if (vehicleDetailsArr.length) {
+                        var message = LANGUAGE.PROMPT_MSG028;
+                        for (var i = vehicleDetailsArr.length - 1; i >= 0; i--) {
+                            message += '</br><b>' + vehicleDetailsArr[i].name + ': ' + vehicleDetailsArr[i].value + '</b>';
+                        }
+                        message += '</br>' + LANGUAGE.PROMPT_MSG029;
+
+                        App.confirm(message, function() {
+                            for (var i = vehicleDetailsArr.length - 1; i >= 0; i--) {
+                                params.inputs[vehicleDetailsArr[i].inputName].val(vehicleDetailsArr[i].value);
+                            }
+                        });
+                    }
+                }
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                App.hideProgressbar();
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+                App.alert(LANGUAGE.PROMPT_MSG027);
+
+            }
+        });
+
+    }
 }

@@ -60,6 +60,11 @@ window.LanguagePackages = {
         "PROMPT_MSG024": "Was payment successful?",
         "PROMPT_MSG025": "Activate this device as",
         "PROMPT_MSG026": "You do not have permission to activate this device as",
+        "PROMPT_MSG027": "VIN number cannot be recognized",
+        "PROMPT_MSG028": "We will pre fill Asset Details",
+        "PROMPT_MSG029": "Proceed?",
+
+
         "LOGIN_MSG01": "The login(email) or password you entered is incorrect.",
         "LOGIN_MSG02": "Username / Email",
         "LOGIN_MSG03": "Password",
