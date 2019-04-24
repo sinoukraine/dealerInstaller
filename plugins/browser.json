@@ -1,0 +1,43 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "phonegap-plugin-push": {
+            "SENDER_ID": "XXXXXXX",
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "cordova-plugin-buildinfo": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "kaiquecruz-phonegap-plugin-barcodescanner-custom": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        }
+    },
+    "dependent_plugins": {}
+}

@@ -1,0 +1,155 @@
+{
+  "project_info": {
+    "project_number": "1097482483564",
+    "firebase_url": "https://quiktrak-1a820.firebaseio.com",
+    "project_id": "quiktrak-1a820",
+    "storage_bucket": "quiktrak-1a820.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097482483564:android:20148436b61a4eff",
+        "android_client_info": {
+          "package_name": "com.classiccarconcierge.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097482483564-mt5mtgj811opr3rgev6si0ci7079rvsd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhjlBAHlTG35_oOSom77Oci0LMJsgoEZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097482483564-mt5mtgj811opr3rgev6si0ci7079rvsd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1097482483564-un7mrqasitk78pqq4p7l2e9ijsu56u65.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.warden.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097482483564:android:87367253e626c615",
+        "android_client_info": {
+          "package_name": "com.sinopacific.dealer.installer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097482483564-mt5mtgj811opr3rgev6si0ci7079rvsd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhjlBAHlTG35_oOSom77Oci0LMJsgoEZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097482483564-mt5mtgj811opr3rgev6si0ci7079rvsd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1097482483564-un7mrqasitk78pqq4p7l2e9ijsu56u65.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.warden.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097482483564:android:00a35f4974bea4b7",
+        "android_client_info": {
+          "package_name": "com.sinopacific.pvs.live"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097482483564-mt5mtgj811opr3rgev6si0ci7079rvsd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhjlBAHlTG35_oOSom77Oci0LMJsgoEZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097482483564-mt5mtgj811opr3rgev6si0ci7079rvsd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1097482483564-un7mrqasitk78pqq4p7l2e9ijsu56u65.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.warden.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097482483564:android:a0bc31796da094f9",
+        "android_client_info": {
+          "package_name": "com.warden.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097482483564-mt5mtgj811opr3rgev6si0ci7079rvsd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhjlBAHlTG35_oOSom77Oci0LMJsgoEZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097482483564-mt5mtgj811opr3rgev6si0ci7079rvsd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1097482483564-un7mrqasitk78pqq4p7l2e9ijsu56u65.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.warden.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
