@@ -233,7 +233,7 @@ var App = new Framework7({
     //pushState: true,       
     allowDuplicateUrls: true,
     sortable: false,
-    modalTitle: 'dealer-installer',
+    modalTitle: 'Dealer Installer',
     precompileTemplates: true,
     template7Pages: true,
     tapHold: false, //enable tap hold events
@@ -507,7 +507,7 @@ $$('body').on('click', '.scanBarCode', function() {
         App.alert('plugin not supported')
     } else {
         permissions.hasPermission(permissions.CAMERA, function(status) {
-            App.alert(JSON.stringify(status))
+            // App.alert(JSON.stringify(status))
 
             if (status.hasPermission) {
                 openBarCodeReader(input);
@@ -4018,7 +4018,7 @@ function getImage(source) {
             function(imgData) {
                 //$('.media-object', this.$el).attr('src', "data:image/jpeg;base64,"+imgData);
                 mainView.router.load({
-                    url: 'resources/templates/asset.edit.photo.html',
+                    url: 'resources/templates/edit.photo.html',
                     context: {
                         imgSrc: "data:image/jpeg;base64," + imgData
                     }
