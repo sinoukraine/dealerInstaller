@@ -501,7 +501,23 @@ $$('body').on('click', '.search_tabbar .tab-link', function() {
 
 $$('body').on('click', '.scanBarCode', function() {
     let input = $$(this).siblings('input');
-    openBarCodeReader(input);
+
+    let permissions = cordova.plugins.permissions;
+
+    permissions.hasPermission(permissions.CAMERA, function(status) {
+        permissions.requestPermission(permissions.CAMERA, success, error);
+
+        function error() {
+            App.alert('Camera permission is not turned on');
+        }
+
+        function success(status) {
+            openBarCodeReader(input);
+            if (!status.hasPermission) error();
+        }
+    });
+
+
 });
 
 $$(document).on('click', '.user_settigns_tabbar a.tab-link', function(e) {
@@ -3976,7 +3992,7 @@ function saveImg() {
 
 
 function getImage(source) {
-    checkPermiss();
+    // checkPermiss();
     if (!navigator.camera) {
         alert("Camera API not supported", "Error");
 
@@ -4038,13 +4054,8 @@ function GetBase64Code(path) {
 }
 
 
-
-
-
-
 function openBarCodeReader(input) {
     //console.log(input);
-    checkPermiss();
     if (window.device && cordova.plugins && cordova.plugins.barcodeScanner) {
         cordova.plugins.barcodeScanner.scan(
             function(result) {
@@ -4217,18 +4228,18 @@ function getVehicleDetailsByVin(params) {
 }
 
 
-function checkPermiss() {
-    var permissions = cordova.plugins.permissions;
+// function checkPermiss() {
+//     var permissions = cordova.plugins.permissions;
 
-    permissions.hasPermission(permissions.camera, function(status) {
-        permissions.requestPermission(permissions.camera, success, error);
+//     permissions.hasPermission(permissions.CAMERA, function(status) {
+//         permissions.requestPermission(permissions.CAMERA, success, error);
 
-        function error() {
-            console.warn('Camera permission is not turned on');
-        }
+//         function error() {
+//             console.warn('Camera permission is not turned on');
+//         }
 
-        function success(status) {
-            if (!status.hasPermission) error();
-        }
-    });
-}
+//         function success(status) {
+//             if (!status.hasPermission) error();
+//         }
+//     });
+// }
