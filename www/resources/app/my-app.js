@@ -632,6 +632,7 @@ $$('body').on('click', '.assetList .item-inner', function() {
     TargetAsset.Id = !parrent.data('id') ? '' : parrent.data('id');
     TargetAsset.Type = !parrent.data('type') ? '' : parrent.data('type');
     TargetAsset.Customer = !parrent.data('customer') ? '' : parrent.data('customer');
+    TargetAsset.ASSET_IMG = '';
 
     var notificationsCheck = '';
     if (parrent.data('notifications') == 1) {
@@ -3943,18 +3944,21 @@ function saveImg() {
         height: 200
     }).toDataURL();
 
-    // mainView.router.back();
+    // воставляем что мы в кропере обработали
     $$('.asset_img img').attr('src', resImg);
 
-    if (TargetAsset.ASSET_IMEI) {
-        $$('.assets_list li[data-imei="' + TargetAsset.ASSET_IMEI + '"] .item-media img').attr('src', resImg);
+    // в списке вставляем что вернул кроппер
+    if (TargetAsset.IMEI) {
+        $$('.assetList li[data-imei="' + TargetAsset.IMEI + '"] .item-media img').attr('src', resImg);
     }
 
+    // обьект 
     var assetImg = {
         data: resImg,
-        id: 'IMEI_' + TargetAsset.ASSET_IMEI
+        id: 'IMEI_' + TargetAsset.IMEI
     };
 
+    // отправлем на сервер нашу картинку и 
     App.showPreloader();
     $.ajax({
         type: 'POST',
