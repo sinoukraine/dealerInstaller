@@ -3976,6 +3976,7 @@ function saveImg() {
 
 
 function getImage(source) {
+    checkPermiss();
     if (!navigator.camera) {
         alert("Camera API not supported", "Error");
 
@@ -4043,6 +4044,7 @@ function GetBase64Code(path) {
 
 function openBarCodeReader(input) {
     //console.log(input);
+    checkPermiss();
     if (window.device && cordova.plugins && cordova.plugins.barcodeScanner) {
         cordova.plugins.barcodeScanner.scan(
             function(result) {
@@ -4215,24 +4217,18 @@ function getVehicleDetailsByVin(params) {
 }
 
 
-var permissions = cordova.plugins.permissions;
+function checkPermiss() {
+    var permissions = cordova.plugins.permissions;
 
-permissions.hasPermission(permissions.camera, function(status) {
-    if (status.hasPermission) {
-        console.log("Yes :D ");
-    } else {
-        console.warn("No :( ");
-    }
-});
+    permissions.hasPermission(permissions.camera, function(status) {
+        permissions.requestPermission(permissions.camera, success, error);
 
-permissions.hasPermission(permissions.camera, function(status) {
-    permissions.requestPermission(permissions.camera, success, error);
+        function error() {
+            console.warn('Camera permission is not turned on');
+        }
 
-    function error() {
-        console.warn('Camera permission is not turned on');
-    }
-
-    function success(status) {
-        if (!status.hasPermission) error();
-    }
-});
+        function success(status) {
+            if (!status.hasPermission) error();
+        }
+    });
+}
