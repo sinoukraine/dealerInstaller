@@ -503,19 +503,30 @@ $$('body').on('click', '.scanBarCode', function() {
     let input = $$(this).siblings('input');
 
     let permissions = cordova.plugins.permissions;
+    if (!permissions) {
+        App.alert('plugin not supported')
+    } else {
+        permissions.hasPermission(permissions.CAMERA, function(status) {
+            App.alert(JSON.stringify(status))
 
-    permissions.hasPermission(permissions.CAMERA, function(status) {
-        permissions.requestPermission(permissions.CAMERA, success, error);
+            if (status.hasPermission) {
+                openBarCodeReader(input);
+            } else {
+                permissions.requestPermission(permissions.CAMERA, success, error);
 
-        function error() {
-            App.alert('Camera permission is not turned on');
-        }
+                function error() {
+                    App.alert('Camera permission is not turned on');
+                }
 
-        function success(status) {
-            openBarCodeReader(input);
-            if (!status.hasPermission) error();
-        }
-    });
+                function success(status1) {
+                    openBarCodeReader(input);
+                    if (!status1.hasPermission) error();
+                }
+            }
+        });
+
+    }
+
 
 
 });
