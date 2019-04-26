@@ -102,7 +102,7 @@ window.LanguagePackages = {
         "USER_RECHARGE_MSG03": "Buy now",
         "ASSET_COMMANDS_MSG00": "Command",
         "ASSET_COMMANDS_MSG01": "In this section, you can send different commands to test the device.",
-        "ASSET_COMMANDS_MSG02": "Asset Details",
+        "ASSET_COMMANDS_MSG02": "Command List",
         "ASSET_COMMANDS_MSG03": "Check Status",
         "ASSET_COMMANDS_MSG04": "Check Location",
         "ASSET_COMMANDS_MSG05": "Verify Installation",

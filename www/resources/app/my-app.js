@@ -233,7 +233,7 @@ var App = new Framework7({
     //pushState: true,       
     allowDuplicateUrls: true,
     sortable: false,
-    modalTitle: 'Dealer Installer',
+    modalTitle: 'dealer-installer',
     precompileTemplates: true,
     template7Pages: true,
     tapHold: false, //enable tap hold events
@@ -268,6 +268,7 @@ var API_URL = {};
 API_URL.URL_GET_LOGIN = API_DOMIAN1 + "Client/Login2";
 API_URL.URL_GET_LOGOUT = API_DOMIAN1 + "Client/Logout";
 API_URL.URL_GET_ASSET_LIST = API_DOMIAN1 + "Client/GetAssetList";
+// API_URL.URL_GET_ASSET_LIST = API_DOMIAN1 + "Client/GetAssetList";
 API_URL.URL_GET_CREDIT = API_DOMIAN1 + "Client/GetCredit";
 API_URL.URL_GET_DEVICE_DETAIL = API_DOMIAN1 + "Client/GetAssetDetail";
 API_URL.URL_CHANGE_NOTIFICATION_STATUS = API_DOMIAN1 + "Client/Notification";
@@ -278,6 +279,7 @@ API_URL.URL_SET_IMMOBILISE = API_DOMIAN1 + "Client/Immobilise2";
 API_URL.URL_SET_UNIMMOBILISE = API_DOMIAN1 + "Client/Unimobilise2";
 API_URL.URL_GET_LIVE_POSITION = API_DOMIAN1 + "Client/LivePostion";
 API_URL.URL_GET_VERIFY2 = API_DOMIAN1 + "Client/Verfiy2";
+API_URL.URL_GET_VERIFY3 = API_DOMIAN1 + "Client/Verfiy3";
 API_URL.URL_SENT_NOTIFY = API_DOMIAN1 + "Client/SentNotify";
 API_URL.URL_EDIT_DEVICE = API_DOMIAN1 + "Client/EditAsset";
 API_URL.URL_PHOTO_UPLOAD = "http://upload.quiktrak.co/image/Upload";
@@ -339,7 +341,8 @@ var cameraButtons = [{
     {
         text: LANGUAGE.PHOTO_EDIT_MSG02,
         onClick: function() {
-            galleryImgs(0);
+            // galleryImgs(0);
+            getImage(0);
         }
     },
     {
@@ -372,6 +375,9 @@ var virtualAssetList = App.virtualList('.assetList', {
         console.log(item.IMEI);
 
         var ret = '';
+
+        console.log(item);
+
         var assetImg = getAssetImg(item, { 'assetList': true });
 
         ret += '<li class="item-content" data-imei="' + item.IMEI + '" data-imsi="' + item.IMSI + '" data-name="' + item.Name + '" data-id="' + item.Id + '" data-type="' + item.ProductName + '" data-notifications="' + item.NotificationState + '" data-customer="' + item.Customer + '" >';
@@ -381,7 +387,6 @@ var virtualAssetList = App.virtualList('.assetList', {
         // ret += '<img class="item_asset_img" src="resources/images/photo-defaut.svg" >';
         // ret += '</div>';
         // ret += '</div>';
-
 
         ret += '<div class="item-inner">';
         ret += '<div class="item-title-row imei-block">';
@@ -394,7 +399,6 @@ var virtualAssetList = App.virtualList('.assetList', {
         ret += '<div class="item-subtitle">' + LANGUAGE.HOME_MSG02 + ': ' + item.Name + '</div>';
         ret += '</div>';
         ret += '</li>';
-
 
         return ret;
     },
@@ -1270,6 +1274,7 @@ App.onPageInit('asset.commands', function(page) {
 
 
 App.onPageInit('asset.settings', function(page) {
+
     var sendSetting = $$(page.container).find('.sendSetting');
     //var showBlockControll = $$(page.container).find('.showBlockControll');
 
@@ -1277,6 +1282,17 @@ App.onPageInit('asset.settings', function(page) {
         App.actions(cameraButtons);
     });
 
+    let item = {};
+    // item.Photo = Photo;
+    // let imgInner = $$('.asset_img');
+    // let assetImg = getAssetImg(item, { 'assetList': true });
+    // imgInner.append(assetImg);
+
+
+    // var ret = '';
+    // console.log(item);
+    // let assetImg = getAssetImg(item, { 'assetList': true });
+    // ret += '<div class="item-media">' + assetImg + '</div>';
 
     /*var paymentType = $$(page.container).find('[name="PaymentType"]');
     var tabs = $$(page.container).find('.tab');
@@ -1484,14 +1500,12 @@ App.onPageInit('client.details', function(page) {
                                 msg = LANGUAGE.ASSET_VIRIFICATION_MSG16;
                                 break;
                         }
-
                     }
                     App.alert(msg, LANGUAGE.PROMPT_MSG022);
 
                 } else {
                     App.alert(LANGUAGE.PROMPT_MSG013);
                 }
-
                 App.hidePreloader();
             },
             function() {
@@ -1554,27 +1568,30 @@ App.onPageInit('asset.verification', function(page) {
 
 
 function loadPageStatusNew(data) {
+
+
+    let statusObj = JSON.parse(data.Status);
     console.log(data);
 
     // TargetAsset.IMEI = data.Imei;
     mainView.router.load({
         url: 'resources/templates/asset.status.html',
         context: {
-            Imei: data.IMEI,
-            Imsi: data.IMSI,
+            Imei: statusObj.Imei,
+            Imsi: statusObj.Imsi,
             // AssetName: data,
-            StatusTime: data.StatusInfo.CreateDateTime,
-            Acc: data.StatusInfo.Acc,
+            StatusTime: data.Date,
+            Acc: statusObj.Acc,
             DeviceType: data.Product,
-            Name: data.Name,
-            GPS: data.StatusInfo.GPS,
-            GSM: data.StatusInfo.GSM,
-            GPRS: data.StatusInfo.GPRS,
-            Relay: data.StatusInfo.Relay,
-            Battery: data.StatusInfo.Battery,
-            Charger: data.StatusInfo.Charger,
-            Power: data.StatusInfo.Power,
-            // Relay: data.StatusInfo.Relay,
+            Name: statusObj.Name,
+            GPS: statusObj.GPS,
+            GSM: statusObj.GSM,
+            GPRS: statusObj.GPRS,
+            Relay: statusObj.Relay,
+            Battery: statusObj.Battery,
+            Charger: statusObj.Charger,
+            Power: statusObj.Power,
+            Relay: statusObj.Relay,
 
 
 
@@ -2612,6 +2629,14 @@ function loadInstallNotice() {
                 var asset = getAssetParametersName(result.Data);
                 // console.log(asset);
 
+                var AssetImg = 'resources/images/photo-defaut.svg';
+                if (asset && asset.Icon) {
+                    var pattern = /^IMEI_/i;
+                    if (pattern.test(asset.Icon)) {
+                        AssetImg = 'http://upload.quiktrak.co/Attachment/images/' + asset.Icon + '?' + new Date().getTime();
+                    }
+                }
+
                 getDefaultParams(asset.IMEI);
 
 
@@ -2635,7 +2660,8 @@ function loadInstallNotice() {
                         Unit: asset.Unit,
                         InstallPosition: asset.InstallPosition,
                         FitmentOpt: asset.FitmentOpt,
-                        FitmentOptCustom: asset.Describe6
+                        FitmentOptCustom: asset.Describe6,
+                        AssetImg: AssetImg,
                     }
                 });
             } else {
@@ -2675,6 +2701,17 @@ function loadPageSettings() {
                 var asset = getAssetParametersName(result.Data);
                 console.log(asset);
 
+                // let AssetImg = 'http://upload.quiktrak.co/Attachment/images/' + asset.Icon + '?' + new Date().getTime();
+
+
+                var AssetImg = 'resources/images/photo-defaut.svg';
+                if (asset && asset.Icon) {
+                    var pattern = /^IMEI_/i;
+                    if (pattern.test(asset.Icon)) {
+                        AssetImg = 'http://upload.quiktrak.co/Attachment/images/' + asset.Icon + '?' + new Date().getTime();
+                    }
+                }
+
 
                 mainView.router.load({
                     url: 'resources/templates/asset.settings.html',
@@ -2700,7 +2737,8 @@ function loadPageSettings() {
                         Unit: asset.Unit,
                         InstallPosition: asset.InstallPosition,
                         FitmentOpt: asset.FitmentOpt,
-                        FitmentOptCustom: asset.Describe6
+                        FitmentOptCustom: asset.Describe6,
+                        AssetImg: AssetImg
                     }
                 });
             } else {
@@ -2848,6 +2886,9 @@ function loadPageStatus(data) {
 }
 
 function loadPageClientDetails(data) {
+    // console.log(JSON.parse(data));
+    // let dataObj = JSON.parse(data);
+
     if (data) {
         if (data.Date) {
             var localTime = moment.utc(data.Date).toDate();
@@ -2870,7 +2911,6 @@ function loadPageClientDetails(data) {
                 Account: data.Account,
                 LoginName: data.LoginName,
                 Date: data.Date,
-
                 FirstName: data.FirstName,
                 LastName: data.LastName,
                 PhoneNumber: data.PhoneNumber,
@@ -3152,19 +3192,27 @@ function requestVerify() {
         };
 
         App.showPreloader();
-        JSON1.requestPost(API_URL.URL_GET_VERIFY2, data, function(result) {
+        JSON1.requestPost(API_URL.URL_GET_VERIFY3, data, function(result) {
                 console.log(result);
                 if (result.MajorCode == '000') {
 
-                    loadPageClientDetails(result.Data);
-
-                    let verifyData = JSON.stringify(result.Data);
-                    localStorage.setItem('verifyData', verifyData);
 
 
+                    if (result.Data.Status == null || result.Data.Status == '') {
+                        App.alert('Please, check Status first');
+                    } else {
+                        loadPageClientDetails(result.Data);
+                        let verifyData = JSON.stringify(result.Data);
+                        localStorage.setItem('verifyData', verifyData);
+                    }
+
+                    // loadPageClientDetails(result.Data);
+                    // let verifyData = JSON.stringify(result.Data);
+                    // localStorage.setItem('verifyData', verifyData);
 
                 } else if (result.MajorCode == '100') {
                     var msg = LANGUAGE.ASSET_VIRIFICATION_MSG12;
+                    console.log(result.Data);
                     if (result.Data) {
                         switch (result.Data) {
                             case 'OFFLINE':
@@ -3861,57 +3909,6 @@ function initCropper() {
 
 }
 
-//Take pictures
-function getImage() {
-    if (window.plus) {
-        var cmr = plus.camera.getCamera();
-        cmr.captureImage(function(p) {
-            plus.io.resolveLocalFileSystemURL(p, function(entry) {
-                var localurl = entry.toLocalURL(); //
-                GetBase64Code(localurl);
-            });
-        });
-    } else {
-        console.log('Plus not found');
-    }
-
-}
-
-//Select from album
-function galleryImgs() {
-    if (window.plus) {
-        plus.gallery.pick(function(e) {
-            GetBase64Code(e.files[0]);
-        }, function(e) {
-            //outSet( "CANCEL SELECT" );
-        }, { filter: "image", multiple: true, maximum: 1 });
-    } else {
-        console.log('Plus not found');
-    }
-
-}
-
-function GetBase64Code(path) //image path
-{
-    var bitmap = new plus.nativeObj.Bitmap("test");
-    // load image
-    bitmap.load(path, function() {
-        var base4 = bitmap.toBase64Data();
-
-        mainView.router.load({
-            url: 'resources/templates/edit.photo.html',
-            context: {
-                imgSrc: base4
-            }
-        });
-
-        //console.log('IMAGEЈє'+base4);
-    }, function(e) {
-        //alert('ERRORЈє'+JSON.stringify(e));
-    });
-}
-
-
 
 function saveImg() {
     resImg = cropper.getCroppedCanvas({
@@ -3919,7 +3916,7 @@ function saveImg() {
         height: 200
     }).toDataURL();
 
-    mainView.router.back();
+    // mainView.router.back();
     $$('.asset_img img').attr('src', resImg);
 
     if (TargetAsset.ASSET_IMEI) {
@@ -3960,6 +3957,87 @@ function saveImg() {
 
 
 }
+
+//Take pictures
+// function getImage() {
+//     if (window.plus) {
+//         var cmr = plus.camera.getCamera();
+//         cmr.captureImage(function(p) {
+//             plus.io.resolveLocalFileSystemURL(p, function(entry) {
+//                 var localurl = entry.toLocalURL(); //
+//                 GetBase64Code(localurl);
+//             });
+//         });
+//     } else {
+//         console.log('Plus not found');
+//     }
+
+// }
+
+
+function getImage(source) {
+    if (!navigator.camera) {
+        alert("Camera API not supported", "Error");
+
+    } else {
+        var options = {
+            quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: source, // 0:Photo Library, 1=Camera, 2=Saved Album
+            encodingType: 0 // 0=JPG 1=PNG
+        };
+        navigator.camera.getPicture(
+            function(imgData) {
+                //$('.media-object', this.$el).attr('src', "data:image/jpeg;base64,"+imgData);
+                mainView.router.load({
+                    url: 'resources/templates/asset.edit.photo.html',
+                    context: {
+                        imgSrc: "data:image/jpeg;base64," + imgData
+                    }
+                });
+            },
+            function() {
+                //alert('Error taking picture', 'Error');
+            },
+            options);
+    }
+}
+
+//Select from album
+function galleryImgs() {
+    if (window.plus) {
+        plus.gallery.pick(function(e) {
+            GetBase64Code(e.files[0]);
+        }, function(e) {
+            //outSet( "CANCEL SELECT" );
+        }, { filter: "image", multiple: true, maximum: 1 });
+    } else {
+        console.log('Plus not found');
+    }
+
+}
+
+function GetBase64Code(path) {
+    var bitmap = new plus.nativeObj.Bitmap("test");
+    // load image
+    bitmap.load(path, function() {
+        var base4 = bitmap.toBase64Data();
+
+        mainView.router.load({
+            url: 'resources/templates/edit.photo.html',
+            context: {
+                imgSrc: base4
+            }
+        });
+
+        //console.log('IMAGEЈє'+base4);
+    }, function(e) {
+        //alert('ERRORЈє'+JSON.stringify(e));
+    });
+}
+
+
+
 
 
 
@@ -4023,8 +4101,8 @@ function getAssetImg(params, imgFor) {
     var assetImg = '';
     if (params && imgFor.assetList) {
         var pattern = /^IMEI_/i;
-        if (params.Icon && pattern.test(params.Icon)) {
-            assetImg = '<img class="item_asset_img" src="http://upload.quiktrak.co/Attachment/images/' + params.Icon + '?' + new Date().getTime() + 'alt="">';
+        if (params.Photo && pattern.test(params.Photo)) {
+            assetImg = '<img class="item_asset_img" src="http://upload.quiktrak.co/Attachment/images/' + params.Photo + '?' + new Date().getTime() + 'alt="">';
         } else if (params.Name) {
             params.Name = $.trim(params.Name);
             var splitted = params.Name.split(' ');
