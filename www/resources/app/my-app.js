@@ -4213,3 +4213,26 @@ function getVehicleDetailsByVin(params) {
 
     }
 }
+
+
+var permissions = cordova.plugins.permissions;
+
+permissions.hasPermission(permissions.camera, function(status) {
+    if (status.hasPermission) {
+        console.log("Yes :D ");
+    } else {
+        console.warn("No :( ");
+    }
+});
+
+permissions.hasPermission(permissions.camera, function(status) {
+    permissions.requestPermission(permissions.camera, success, error);
+
+    function error() {
+        console.warn('Camera permission is not turned on');
+    }
+
+    function success(status) {
+        if (!status.hasPermission) error();
+    }
+});
