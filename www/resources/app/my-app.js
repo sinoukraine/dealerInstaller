@@ -372,12 +372,7 @@ var virtualAssetList = App.virtualList('.assetList', {
     },
     // Display the each item using Template7 template parameter
     renderItem: function(index, item) {
-        console.log(item.IMEI);
-
         var ret = '';
-
-        console.log(item);
-
         var assetImg = getAssetImg(item, { 'assetList': true });
 
         ret += '<li class="item-content" data-imei="' + item.IMEI + '" data-imsi="' + item.IMSI + '" data-name="' + item.Name + '" data-id="' + item.Id + '" data-type="' + item.ProductName + '" data-notifications="' + item.NotificationState + '" data-customer="' + item.Customer + '" >';
@@ -1466,9 +1461,7 @@ App.onPageInit('asset.settings', function(page) {
         JSON1.requestPost(API_URL.URL_EDIT_DEVICE, data, function(result) {
                 console.log(result);
                 if (result.MajorCode == '000') {
-
                     mainView.router.back();
-
                 } else {
                     App.alert(LANGUAGE.PROMPT_MSG013);
                 }
@@ -1504,6 +1497,7 @@ App.onPageInit('client.details', function(page) {
 
         JSON1.requestPost(API_URL.URL_SENT_NOTIFY, data, function(result) {
                 console.log(result);
+                console.log(data);
                 if (result.MajorCode == '000') {
 
                     loadPageVerification(result.Data);
@@ -2277,13 +2271,9 @@ App.onPageInit('asset.installation.notice', function(page) {
     let optionsHTML = '';
     let optionsArry = [];
     let solutionType = $$(page.container).find('[name="solutionType"]');
-
     let ProductCode = $$(page.container).find('[name="deviceType"]');
     let IMEI = $$(page.container).find('[name="IMEI"]');
     let DealerToken = $$(page.container).find('[name="dealerToken"]');
-    // let solutionSelect = $$(page.container).find('[name="solutionType"] option:selected').val();
-    // let solutionSelected = solutionSelect.val();
-    // console.log(solutionSelect);
     let fitmentOptSelect = $$(page.container).find('[name="FitmentOpt"]');
     let fitmentOptSelectSet = fitmentOptSelect.data("set");
     let fitmentOptCustomWrapper = $$(page.container).find('.fitment_opt_custom_wrapper');
@@ -2382,7 +2372,6 @@ App.onPageInit('asset.installation.notice', function(page) {
 
     // Open About popover
     $$('.notice-popover-link').on('click', function() {
-        console.log('click');
         var clickedLink = this;
         App.popover('.popover-notice', clickedLink);
     });
@@ -2393,9 +2382,9 @@ App.onPageInit('asset.installation.notice', function(page) {
     // солюшен подбор сервис плана
     solutionType.on('change', function() {
         let selected = this.value;
+        console.log('changed');
         if (selected) {
-            // console.log(selected);
-            if (ProductCode.val() && IMEI.val() && DealerToken.val()) {
+            if (ProductCode.val() && IMEI.val() && DealerToken.val() && selected) {
                 getAdditionalData({
                     SolutionCode: selected,
                     ProductCode: $$(page.container).find('[name="deviceType"]').val(),
@@ -2442,7 +2431,6 @@ App.onPageInit('asset.installation.notice', function(page) {
         if (Data.DealerToken && Data.VinNumber && Data.Imei && Data.StockNumer && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
             App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
-                    console.log(result);
                     if (result.MajorCode == '000') {
                         mainView.router.back();
                     } else {
@@ -2473,7 +2461,6 @@ App.onPageInit('asset.installation.notice', function(page) {
 
 function selectChange() {
     let solution = $$('[name="solutionType"]');
-    console.log(solution);
 }
 
 // узнаем информацио о пользователе 
@@ -2481,23 +2468,28 @@ function getDefaultParams(imei) {
     let data = {
         'IMEI': imei,
     };
-
-
+    App.showPreloader();
     JSON1.requestPost(API_URL.URL_VERIFY, data,
         function(result) {
-            // console.log(result);
             if (result.MajorCode == '000') {
-                setDefaultData(result.Data);
-                // if (result.Data.DEALER_TOKEN && result.Data.DEVICETYPE) {
-                //     $$('[name="dealerToken"]').val(result.Data.DEALER_TOKEN);
-                //     $$('[name="deviceType"]').val(result.Data.DEVICETYPE);
-                // } else {
-                //     console.log('No fond dealer token and device type')
-                // }
+                // console.log(result.Data.IMEI);
+
+                if (result.Data.IMEI == 'ACTIVATED') {
+                    App.alert('Your device is already activated');
+                    mainView.router.back();
+                } else {
+                    if (result.Data.DEALER_TOKEN !== 'NONE' && result.Data.DEVICETYPE) {
+                        setDefaultData(result.Data);
+                    } else {
+                        console.log('no dealer token or device type');
+                    }
+                }
+
             }
+            App.hidePreloader();
         },
         function() {
-            // App.hidePreloader();
+            App.hidePreloader();
             App.alert(LANGUAGE.COM_MSG02);
         }
     );
@@ -2509,19 +2501,18 @@ function getDefaultParams(imei) {
 
 // передаем инфу на ssp метод, достаем инфу (солюшен, сервис)
 function setDefaultData(data) {
-    // console.log(data);
+
     if (data) {
         var deviceType = data.DEVICETYPE;
         var IMEI = $$('[name="IMEI"]').val();
         var dealerToken = data.DEALER_TOKEN;
-
 
         $$('[name="dealerToken"]').val(data.DEALER_TOKEN);
         $$('[name="deviceType"]').val(data.DEVICETYPE);
 
 
         if (deviceType && deviceType != 'NONE') {
-            getAdditionalData({ ProductCode: deviceType, IMEI: IMEI, DealerToken: dealerToken, });
+            getAdditionalData({ ProductCode: deviceType, IMEI: IMEI, DealerToken: dealerToken, SolutionCode: "Loc8" });
         } else {
             console.log('device type');
         }
@@ -2534,20 +2525,21 @@ function getAdditionalData(data) {
     // console.log(data);
     JSON1.requestPost(API_URL.URL_SSP, data,
         function(result) {
-            // console.log(result);
             if (result.MajorCode == '000') {
                 if (result.Data && result.Data.ServiceProfiles && result.Data.ServiceProfiles.length && result.Data.Solutions && result.Data.Solutions.length) {
-                    if (data.ProductCode && data.SolutionCode) {
-                        // setServicePlans(result.Data, data.SolutionCode);
+                    if (data.ProductCode) {
+                        // && data.SolutionCode
                         setServicePlan(result.Data.ServiceProfiles);
-                    } else {
                         setSolutionType(result.Data.Solutions);
                         setAssetType(result.Data.AssetTypes);
                         setLot(result.Data.AssetGroups);
-                        setServicePlan(result.Data.ServiceProfiles);
+                    } else {
+                        // setSolutionType(result.Data.Solutions);
+                        // setAssetType(result.Data.AssetTypes);
+                        // setLot(result.Data.AssetGroups);
                     }
                 } else {
-                    console.log('There is no Service Plans for this IMEI');
+                    App.alert('There is no Service Plans for this IMEI');
                 }
 
             }
@@ -2578,7 +2570,6 @@ function setSolutionType(solutions) {
     let solutionSelect = $$('[name="solutionType"]');
 
     if (solutions) {
-        // console.log(solutions);
         let optionsHTML = '';
         $.each(solutions, function(key, val) {
             if (val.Code == 'Loc8') {
@@ -2587,6 +2578,7 @@ function setSolutionType(solutions) {
         });
         solutionSelect.html(optionsHTML);
     }
+    // solutionSelect.change();
 
 }
 
@@ -2596,7 +2588,7 @@ function setServicePlan(service) {
     let serviceSelect = $$('[name="servicePlan"]');
 
     if (service) {
-        // console.log(service);
+
         let optionsHTML = '';
         $.each(service, function(key, val) {
             optionsHTML += '<option value="' + val.Code + '" >' + val.Name + '</option>';
@@ -2605,12 +2597,13 @@ function setServicePlan(service) {
     }
 }
 
+
+
 // записываем assetTypes
 function setAssetType(assetType) {
     let assetTypeSelect = $$('[name="assetType"]');
 
     if (assetType) {
-        // console.log(assetType);
         let optionsHTML = '';
         $.each(assetType, function(key, val) {
             optionsHTML += '<option value="' + val + '" >' + val + '</option>';
@@ -2623,7 +2616,6 @@ function setAssetType(assetType) {
 
 // записываем Фитмент опции
 function setFitmentOptions(optionsArry) {
-    // console.log(optionsArry);
     let FitmentOpt = $$('[name="FitmentOpt"]');
     let optionsHTML = '';
 
@@ -2652,12 +2644,10 @@ function loadInstallNotice() {
 
     App.showPreloader();
     JSON1.requestPost(API_URL.URL_GET_DEVICE_DETAIL, data, function(result) {
-            // console.log(result);
             if (result.MajorCode == '000') {
                 var asset = getAssetParametersName(result.Data);
-                // console.log(asset);
-
                 var AssetImg = 'resources/images/photo-defaut.svg';
+
                 if (asset && asset.Icon) {
                     var pattern = /^IMEI_/i;
                     if (pattern.test(asset.Icon)) {
@@ -2724,15 +2714,11 @@ function loadPageSettings() {
 
     App.showPreloader();
     JSON1.requestPost(API_URL.URL_GET_DEVICE_DETAIL, data, function(result) {
-            console.log(result);
+
             if (result.MajorCode == '000') {
                 var asset = getAssetParametersName(result.Data);
-                console.log(asset);
-
-                // let AssetImg = 'http://upload.quiktrak.co/Attachment/images/' + asset.Icon + '?' + new Date().getTime();
-
-
                 var AssetImg = 'resources/images/photo-defaut.svg';
+
                 if (asset && asset.Icon) {
                     var pattern = /^IMEI_/i;
                     if (pattern.test(asset.Icon)) {
@@ -3970,7 +3956,7 @@ function saveImg() {
         success: function(result) {
             App.hidePreloader();
             var res = JSON.stringify(result);
-            alert(res);
+            // alert(res);
             result = typeof(result) == 'string' ? eval("(" + result + ")") : result;
             if (result.MajorCode == "000") {
                 TargetAsset.ASSET_IMG = result.Data;
