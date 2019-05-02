@@ -780,22 +780,22 @@ $$('body').on('click', '.assetList .item-inner', function() {
 
 
 
-$$('body').on('click', '.showBlockControll', function() {
-    var block = $$(this).next('div');
-    if ($$(block).hasClass('sliding')) {
-        if ($$(block).hasClass('active')) {
-            $(block).slideUp("slow", function() {
-                $$(block).removeClass('active');
-                $$(block).removeClass('arrow-up');
-            });
-        } else {
-            $(block).slideDown("slow", function() {
-                $$(block).addClass('active');
-                $$(block).addClass('arrow-up');
-            });
-        }
-    }
-});
+// $$('body').on('click', '.showBlockControll', function() {
+//     var block = $$(this).next('div');
+//     if ($$(block).hasClass('sliding')) {
+//         if ($$(block).hasClass('active')) {
+//             $(block).slideUp("slow", function() {
+//                 $$(block).removeClass('active');
+//                 $$(block).removeClass('arrow-up');
+//             });
+//         } else {
+//             $(block).slideDown("slow", function() {
+//                 $$(block).addClass('active');
+//                 $$(block).addClass('arrow-up');
+//             });
+//         }
+//     }
+// });
 
 
 App.onPageInit('user.profile', function(page) {
@@ -1452,6 +1452,9 @@ App.onPageInit('asset.settings', function(page) {
             "Attr7": $$(page.container).find('input[name="Describe7"]').val(),
             "InstallPosition": $$(page.container).find('input[name="InstallPosition"]').val(),
             "RemoteImmobilise": fitmentOptSelectedArr.toString(),
+            "Photo": TargetAsset.ASSET_IMG,
+
+
         };
         if (fitmentOptSelectedArr.indexOf('D') != -1) {
             data.Attr6 = $$(page.container).find('input[name="FitmentOptCustom"]').val();
@@ -2471,12 +2474,16 @@ function getDefaultParams(imei) {
     App.showPreloader();
     JSON1.requestPost(API_URL.URL_VERIFY, data,
         function(result) {
+            console.log(result);
             if (result.MajorCode == '000') {
                 // console.log(result.Data.IMEI);
-
                 if (result.Data.IMEI == 'ACTIVATED') {
                     App.alert('Your device is already activated');
-                    mainView.router.back();
+                    // mainView.router.back();
+                    // mainView.router.back({
+                    //     url: '/index.html/',
+                    //     force: true,
+                    // });
                 } else {
                     if (result.Data.DEALER_TOKEN !== 'NONE' && result.Data.DEVICETYPE) {
                         setDefaultData(result.Data);
@@ -2484,7 +2491,6 @@ function getDefaultParams(imei) {
                         console.log('no dealer token or device type');
                     }
                 }
-
             }
             App.hidePreloader();
         },
@@ -2525,6 +2531,7 @@ function getAdditionalData(data) {
     // console.log(data);
     JSON1.requestPost(API_URL.URL_SSP, data,
         function(result) {
+            console.log(result);
             if (result.MajorCode == '000') {
                 if (result.Data && result.Data.ServiceProfiles && result.Data.ServiceProfiles.length && result.Data.Solutions && result.Data.Solutions.length) {
                     if (data.ProductCode) {
@@ -3901,7 +3908,6 @@ function getAssetParametersName(data) {
 
 
 /* EDIT PHOTO */
-
 var cropper = null;
 var resImg = null;
 
@@ -3920,7 +3926,6 @@ function initCropper() {
         minContainerHeight: 200,
         crop: function(data) {}
     });
-
 }
 
 
@@ -3996,7 +4001,6 @@ function getImage(source) {
     // checkPermiss();
     if (!navigator.camera) {
         alert("Camera API not supported", "Error");
-
     } else {
         var options = {
             quality: 50,
@@ -4150,6 +4154,9 @@ function getAssetImg(params, imgFor) {
 }
 
 
+
+
+
 function getVehicleDetailsByVin(params) {
     if (params && params.VIN) {
 
@@ -4227,20 +4234,3 @@ function getVehicleDetailsByVin(params) {
 
     }
 }
-
-
-// function checkPermiss() {
-//     var permissions = cordova.plugins.permissions;
-
-//     permissions.hasPermission(permissions.CAMERA, function(status) {
-//         permissions.requestPermission(permissions.CAMERA, success, error);
-
-//         function error() {
-//             console.warn('Camera permission is not turned on');
-//         }
-
-//         function success(status) {
-//             if (!status.hasPermission) error();
-//         }
-//     });
-// }

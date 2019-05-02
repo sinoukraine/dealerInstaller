@@ -1004,7 +1004,7 @@ input[name=LicensePlate]:after {
 .page_profile .list-block input[type=url],
 .page_profile .list-block select,
 .page_profile .list-block textarea {
-    color: #F96868;
+    /* color: #F96868; */
 }
 
 
@@ -1199,6 +1199,7 @@ input[name=LicensePlate]:after {
     top: 5px;
     color: #F96868;
     z-index: 4;
+    font-size: 14px !important;
 }
 
 .credit_card {
