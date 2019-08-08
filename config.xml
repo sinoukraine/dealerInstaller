@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.sinopacific.dealer.installer" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" defaultlocale="en-US" android-versionCode="3" ios-CFBundleVersion="3">
     <name>Dealer Installer</name>
+	
     <description>
         Dealer Installer
     </description>
