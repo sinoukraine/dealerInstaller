@@ -22,6 +22,34 @@
                         }
                     ]
                 }
+            },
+            "*-Info.plist": {
+                "parents": {
+                    "NSCameraUsageDescription": [
+                        {
+                            "xml": "<string>Camera will be used to scan barcodes</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ],
+                    "NSPhotoLibraryUsageDescription": [
+                        {
+                            "xml": "<string>You can select photo of your asset in your photo library and upload it into the app</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ],
+                    "NSPhotoLibraryAddUsageDescription": [
+                        {
+                            "xml": "<string>Need photo library access to save pictures there</string>",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml"
+                        }
+                    ]
+                }
             }
         }
     },
@@ -55,6 +83,9 @@
             "PACKAGE_NAME": "com.sinopacific.dealer.installer"
         },
         "kaiquecruz-phonegap-plugin-barcodescanner-custom": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "cordova-plugin-android-permissions": {
             "PACKAGE_NAME": "com.sinopacific.dealer.installer"
         }
     },
@@ -489,6 +520,14 @@
             "id": "kaiquecruz-phonegap-plugin-barcodescanner-custom.BarcodeScannerProxy",
             "pluginId": "kaiquecruz-phonegap-plugin-barcodescanner-custom",
             "runs": true
+        },
+        {
+            "file": "plugins/cordova-plugin-android-permissions/www/permissions-dummy.js",
+            "id": "cordova-plugin-android-permissions.Permissions",
+            "pluginId": "cordova-plugin-android-permissions",
+            "clobbers": [
+                "cordova.plugins.permissions"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -501,6 +540,7 @@
         "cordova-plugin-buildinfo": "2.0.2",
         "cordova-plugin-splashscreen": "5.0.2",
         "cordova-plugin-camera": "4.0.3",
-        "kaiquecruz-phonegap-plugin-barcodescanner-custom": "6.0.5"
+        "kaiquecruz-phonegap-plugin-barcodescanner-custom": "6.0.5",
+        "cordova-plugin-android-permissions": "1.0.0"
     }
 }

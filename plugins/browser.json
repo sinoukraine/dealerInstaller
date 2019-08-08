@@ -37,6 +37,9 @@
         },
         "kaiquecruz-phonegap-plugin-barcodescanner-custom": {
             "PACKAGE_NAME": "com.sinopacific.dealer.installer"
+        },
+        "cordova-plugin-android-permissions": {
+            "PACKAGE_NAME": "com.sinopacific.dealer.installer"
         }
     },
     "dependent_plugins": {}
