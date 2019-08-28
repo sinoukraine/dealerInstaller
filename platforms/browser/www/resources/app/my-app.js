@@ -2467,8 +2467,8 @@ App.onPageInit('asset.installation.notice', function(page) {
             }
 
         }
-        console.log(Data);
-        if (Data.DealerToken && Data.VinNumber && Data.Imei && Data.StockNumber && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
+        console.log(Data);//&& Data.VinNumber && Data.StockNumber
+        if (Data.DealerToken && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
             App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
                     if (result.MajorCode == '000') {
