@@ -233,15 +233,13 @@ var App = new Framework7({
 		// change default "OK" button text
 		buttonOk: 'Done',
 	},
-	animateNavBackIcon: true,  
-	swipeBackPage: false,
-    swipePanel: 'left',    
-    //material: true,
+    swipePanel: 'left',
+    swipeBackPage: false,
+    material: true,
     //pushState: true,       
     allowDuplicateUrls: true,
     sortable: false,
     modalTitle: 'Dealer Installer',
-    notificationTitle: 'Dealer Installer',
     precompileTemplates: true,
     template7Pages: true,
     tapHold: false, //enable tap hold events
@@ -260,8 +258,7 @@ var $$ = Dom7;
 var mainView = App.addView('.view-main', {
     //main: true,
     domCache: true,
-    swipeBackPage: false,
-
+    swipeBackPage: false
 });
 
 
@@ -382,8 +379,26 @@ var virtualAssetList = App.virtualList('.assetList', {
     // Display the each item using Template7 template parameter
     renderItem: function(index, item) { 
 		
-		if(index === 0){
-			showModalAskForInstallNotice(item);
+		if(index == 0){
+			App.confirm('Go to Install Notice page for Asset IMEI:' + item.IMEI + '?', 'Dealer Installer', callbackOk,  callbackCancel);
+			
+			function callbackOk(){
+				var parrent = $$('.assetList .item-inner').closest('.item-content');
+				
+				TargetAsset.IMEI = !parrent.data('imei') ? '' : parrent.data('imei');
+				TargetAsset.IMSI = !parrent.data('imsi') ? '' : parrent.data('imsi');
+				TargetAsset.Name = !parrent.data('name') ? '' : parrent.data('name');
+				TargetAsset.Id = !parrent.data('id') ? '' : parrent.data('id');
+				TargetAsset.Type = !parrent.data('type') ? '' : parrent.data('type');
+				TargetAsset.Customer = !parrent.data('customer') ? '' : parrent.data('customer');
+				TargetAsset.ASSET_IMG = '';
+
+				loadInstallNotice();
+			}
+			
+			function callbackCancel(){
+				return
+			}
 		}
 		
         var ret = '';
@@ -413,22 +428,6 @@ var virtualAssetList = App.virtualList('.assetList', {
         return ret;
     },
 });
-
-function showModalAskForInstallNotice(item){
-	App.confirm('Are you sure, you want to go to Installation Notice of asset IMEI:' + item.IMEI + '?', 'Dealer Installer', function(){
-			TargetAsset.IMEI = !item.IMEI ? '' : item.IMEI;
-			TargetAsset.IMSI = !item.IMSI ? '' : item.IMSI;
-			TargetAsset.Name = !item.Name ? '' : item.Name;
-			TargetAsset.Id 	 = !item.Id ? '' : item.Id;
-			TargetAsset.Type = !item.ProductName ? '' : item.ProductName;
-			TargetAsset.Customer = !item.Customer ? '' : item.Customer;
-			TargetAsset.ASSET_IMG = '';
-			loadInstallNotice();
-		},  function(){
-			return;
-		}
-	);
-}
 
 
 
@@ -596,11 +595,8 @@ $$('.formSearchDevice input[name="searchInput"]').blur(function() {
 
 $$('body').on('submit', '.formSearchDevice', function(e) {
     e.preventDefault();
-    //submitSearchForm();
+    submitSearchForm();
     return false;
-});
-$$('.formSearchDevice input[name="searchInput"]').on('search', function () {    
-    submitSearchForm($$(this));
 });
 $$('body').on('click', '.searchDevice', function() {
     submitSearchForm();
@@ -2155,10 +2151,8 @@ function toIndex() {
     });
 }
 
-function submitSearchForm(input = false) {
-	if (!input) {
-		input = $$('.formSearchDevice input[name="searchInput"');
-	}    
+function submitSearchForm() {
+    var input = $$('.formSearchDevice input[name="searchInput"');
 
     if (input.val()) {
 
@@ -2474,7 +2468,7 @@ App.onPageInit('asset.installation.notice', function(page) {
 
         }
         console.log(Data);//&& Data.VinNumber && Data.StockNumber
-        if (Data.DealerToken && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
+        if (Data.DealerToken && Data.Name && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
             App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
                     if (result.MajorCode == '000') {
