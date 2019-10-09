@@ -2707,12 +2707,12 @@ function loadInstallNotice() {
 
                 getDefaultParams(asset.IMEI);
 
-
+				App.alert(TargetAsset.IMEI);
                 mainView.router.load({
                     url: 'resources/templates/asset.installation.notice.html',
                     context: {
                         IMEI: TargetAsset.IMEI,
-                        /*IMSI: TargetAsset.IMSI,
+                        IMSI: TargetAsset.IMSI,
                         Type: TargetAsset.Type,
                         Provider: getUserinfo().customerName,
                         Customer: TargetAsset.Customer,
@@ -2729,7 +2729,7 @@ function loadInstallNotice() {
                         InstallPosition: asset.InstallPosition,
                         FitmentOpt: asset.FitmentOpt,
                         FitmentOptCustom: asset.Describe6,
-                        AssetImg: AssetImg,*/
+                        AssetImg: AssetImg,
                     }
                 });
             } else {
