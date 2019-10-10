@@ -2707,31 +2707,36 @@ function loadInstallNotice() {
 
                 getDefaultParams(asset.IMEI);
 
-				App.alert(TargetAsset.IMEI);
-                mainView.router.load({
-                    url: 'resources/templates/asset.installation.notice.html',
-                    context: {
-                        IMEI: TargetAsset.IMEI,
-                        IMSI: TargetAsset.IMSI,
-                        Type: TargetAsset.Type,
-                        Provider: getUserinfo().customerName,
-                        Customer: TargetAsset.Customer,
-                        AssetName: TargetAsset.Name,
-                        //Date: todayStr,
-                        Describe7: asset.Describe7,
-                        LicensePlate: asset.TagName,
-                        Describe1: asset.Describe1,
-                        Describe2: asset.Describe2,
-                        Describe3: asset.Describe3,
-                        Describe4: asset.Describe4,
-                        Odometer: asset.InitMilage,
-                        Unit: asset.Unit,
-                        InstallPosition: asset.InstallPosition,
-                        FitmentOpt: asset.FitmentOpt,
-                        FitmentOptCustom: asset.Describe6,
-                        AssetImg: AssetImg,
-                    }
-                });
+				//App.alert(TargetAsset.IMEI);
+                setTimeout(function () { 
+
+					mainView.router.load({
+						url: 'resources/templates/asset.installation.notice.html',
+						context: {
+							IMEI: TargetAsset.IMEI,
+							IMSI: TargetAsset.IMSI,
+							Type: TargetAsset.Type,
+							Provider: getUserinfo().customerName,
+							Customer: TargetAsset.Customer,
+							AssetName: TargetAsset.Name,
+							//Date: todayStr,
+							Describe7: asset.Describe7,
+							LicensePlate: asset.TagName,
+							Describe1: asset.Describe1,
+							Describe2: asset.Describe2,
+							Describe3: asset.Describe3,
+							Describe4: asset.Describe4,
+							Odometer: asset.InitMilage,
+							Unit: asset.Unit,
+							InstallPosition: asset.InstallPosition,
+							FitmentOpt: asset.FitmentOpt,
+							FitmentOptCustom: asset.Describe6,
+							AssetImg: AssetImg,
+						}
+					});
+				
+				}, 5000);					 
+				
             } else {
                 App.alert(LANGUAGE.PROMPT_MSG013);
             }
