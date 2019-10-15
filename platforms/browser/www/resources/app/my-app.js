@@ -415,7 +415,7 @@ var virtualAssetList = App.virtualList('.assetList', {
 });
 
 function showModalAskForInstallNotice(item){
-	App.confirm('Are you sure, you want to go to Installation Notice of asset IMEI:' + item.IMEI + '?', 'Dealer Installer', function(){
+	App.confirm('Go to Install Notice page for Asset IMEI:' + item.IMEI + '?', 'Dealer Installer', function(){
 			TargetAsset.IMEI = !item.IMEI ? '' : item.IMEI;
 			TargetAsset.IMSI = !item.IMSI ? '' : item.IMSI;
 			TargetAsset.Name = !item.Name ? '' : item.Name;
@@ -1377,13 +1377,15 @@ App.onPageInit('asset.settings', function(page) {
     VINinputEl.on('blur change', function() {
         if ($$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
-            getVehicleDetailsByVin({
+            checkVinNumber({
+				//getVehicleDetailsByVin({
                 VIN: this.value,
                 inputs: {
                     Describe1: makeEl,
                     Describe2: modelEl,
                     Describe3: colorEl,
                     Describe4: yearEl,
+					Describe7: VINinputEl,
                 }
             });
         }
@@ -1393,13 +1395,15 @@ App.onPageInit('asset.settings', function(page) {
         this.value = this.value.toUpperCase();
         if (this.value.length == 17 && $$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
-            getVehicleDetailsByVin({
+            checkVinNumber({
+				//getVehicleDetailsByVin({
                 VIN: this.value,
                 inputs: {
                     Describe1: makeEl,
                     Describe2: modelEl,
                     Describe3: colorEl,
                     Describe4: yearEl,
+					Describe7: VINinputEl,
                 }
             });
         }
@@ -2305,6 +2309,52 @@ function loadPageActivation(planCode) {
     }
 }
 
+function checkVinNumber(params){
+        if (params && params.VIN) {
+            var vinLength = params.VIN.length;
+            console.log(vinLength);
+            if (vinLength == 18){
+                params.VIN = params.VIN.slice(1);
+                getVehicleDetailsByVin(params);
+            } else if(vinLength > 18 || vinLength < 17){
+                App.modal({
+                    title: '<div class="custom-modal-logo-wrapper"><img class="custom-modal-logo" src="resources/images/logo-dark.png" alt=""/></div>',
+                    text: '<div class="custom-modal-text">' + LANGUAGE.PROMPT_MSG030 + ':</div>',
+                    afterText: `
+                <div class="list-block list-block-modal m-0 no-hairlines ">          
+                    <ul>                               
+                        <li>
+                            <div class="item-content pl-0">                                    
+                                <div class="item-inner pr-0">                                      
+                                    <div class="item-input item-input-field">
+                                        <input type="text" placeholder="${ LANGUAGE.ASSET_SETTINGS_MSG19 }" name="VIN-check" value="${ params.VIN }" >
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                `,
+                    buttons: [{
+                        text: LANGUAGE.COM_MSG04,
+                    },
+                        {
+                            text: LANGUAGE.COM_MSG34,
+                            bold: true,
+                            onClick: function(modal, e) {
+                                params.VIN = $$(modal).find('input[name="VIN-check"]').val();
+                                params.inputs.Describe7.data('prev-val',params.VIN);
+                                params.inputs.Describe7.val(params.VIN);
+                                getVehicleDetailsByVin(params);
+                            }
+                        },
+                    ]
+                });
+            }else{
+                getVehicleDetailsByVin(params);
+            }
+        }
+    }
 
 // installation notice page
 App.onPageInit('asset.installation.notice', function(page) {
@@ -2340,13 +2390,15 @@ setTimeout(function () {
     VINinputEl.on('blur change', function() {
         if ($$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
-            getVehicleDetailsByVin({
+            checkVinNumber({
+			//getVehicleDetailsByVin({
                 VIN: this.value,
                 inputs: {
                     Describe1: makeEl,
                     Describe2: modelEl,
                     Describe3: colorEl,
                     Describe4: yearEl,
+                    VinNumber: VINinputEl,
                 }
             });
         }
@@ -2356,13 +2408,15 @@ setTimeout(function () {
         this.value = this.value.toUpperCase();
         if (this.value.length == 17 && $$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
-            getVehicleDetailsByVin({
+            checkVinNumber({
+			//getVehicleDetailsByVin({
                 VIN: this.value,
                 inputs: {
                     Describe1: makeEl,
                     Describe2: modelEl,
                     Describe3: colorEl,
                     Describe4: yearEl,
+                    VinNumber: VINinputEl,
                 }
             });
         }
@@ -2476,7 +2530,7 @@ setTimeout(function () {
         }
 		
         //console.log(Data);//&& Data.VinNumber && Data.StockNumber
-        if (Data.DealerToken && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
+        if (Data.DealerToken && Data.Name && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
             App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
 					console.log(result);
@@ -4212,7 +4266,6 @@ function getAssetImg(params, imgFor) {
 
 function getVehicleDetailsByVin(params) {
     if (params && params.VIN) {
-
         var container = $$('body');
         if (container.children('.progressbar, .progressbar-infinite').length) return; //don't run all this if there is a current progressbar loading
         App.showProgressbar(container);

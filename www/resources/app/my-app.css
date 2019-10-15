@@ -1277,3 +1277,7 @@ select {
 .list-block {
     margin: 35px 0px 0px 0px;
 }
+
+.list-block .item-title.label+.item-input {
+    margin-left: 0px;
+}
