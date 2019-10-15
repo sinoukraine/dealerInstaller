@@ -233,15 +233,13 @@ var App = new Framework7({
 		// change default "OK" button text
 		buttonOk: 'Done',
 	},
-	animateNavBackIcon: true,  
-	swipeBackPage: false,
-    swipePanel: 'left',    
-    //material: true,
+    swipePanel: 'left',
+    swipeBackPage: false,
+    material: true,
     //pushState: true,       
     allowDuplicateUrls: true,
     sortable: false,
     modalTitle: 'Dealer Installer',
-    notificationTitle: 'Dealer Installer',
     precompileTemplates: true,
     template7Pages: true,
     tapHold: false, //enable tap hold events
@@ -260,8 +258,7 @@ var $$ = Dom7;
 var mainView = App.addView('.view-main', {
     //main: true,
     domCache: true,
-    swipeBackPage: false,
-
+    swipeBackPage: false
 });
 
 
@@ -382,8 +379,26 @@ var virtualAssetList = App.virtualList('.assetList', {
     // Display the each item using Template7 template parameter
     renderItem: function(index, item) { 
 		
-		if(index === 0){
-			showModalAskForInstallNotice(item);
+		if(index == 0){
+			App.confirm('Go to Install Notice page for Asset IMEI:' + item.IMEI + '?', 'Dealer Installer', callbackOk,  callbackCancel);
+			
+			function callbackOk(){
+				var parrent = $$('.assetList .item-inner').closest('.item-content');
+				
+				TargetAsset.IMEI = !parrent.data('imei') ? '' : parrent.data('imei');
+				TargetAsset.IMSI = !parrent.data('imsi') ? '' : parrent.data('imsi');
+				TargetAsset.Name = !parrent.data('name') ? '' : parrent.data('name');
+				TargetAsset.Id = !parrent.data('id') ? '' : parrent.data('id');
+				TargetAsset.Type = !parrent.data('type') ? '' : parrent.data('type');
+				TargetAsset.Customer = !parrent.data('customer') ? '' : parrent.data('customer');
+				TargetAsset.ASSET_IMG = '';
+
+				loadInstallNotice();
+			}
+			
+			function callbackCancel(){
+				return
+			}
 		}
 		
         var ret = '';
@@ -413,22 +428,6 @@ var virtualAssetList = App.virtualList('.assetList', {
         return ret;
     },
 });
-
-function showModalAskForInstallNotice(item){
-	App.confirm('Go to Install Notice page for Asset IMEI:' + item.IMEI + '?', 'Dealer Installer', function(){
-			TargetAsset.IMEI = !item.IMEI ? '' : item.IMEI;
-			TargetAsset.IMSI = !item.IMSI ? '' : item.IMSI;
-			TargetAsset.Name = !item.Name ? '' : item.Name;
-			TargetAsset.Id 	 = !item.Id ? '' : item.Id;
-			TargetAsset.Type = !item.ProductName ? '' : item.ProductName;
-			TargetAsset.Customer = !item.Customer ? '' : item.Customer;
-			TargetAsset.ASSET_IMG = '';
-			loadInstallNotice();
-		},  function(){
-			return;
-		}
-	);
-}
 
 
 
@@ -596,11 +595,8 @@ $$('.formSearchDevice input[name="searchInput"]').blur(function() {
 
 $$('body').on('submit', '.formSearchDevice', function(e) {
     e.preventDefault();
-    //submitSearchForm();
+    submitSearchForm();
     return false;
-});
-$$('.formSearchDevice input[name="searchInput"]').on('search', function () {    
-    submitSearchForm($$(this));
 });
 $$('body').on('click', '.searchDevice', function() {
     submitSearchForm();
@@ -1378,14 +1374,13 @@ App.onPageInit('asset.settings', function(page) {
         if ($$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
             checkVinNumber({
-				//getVehicleDetailsByVin({
                 VIN: this.value,
                 inputs: {
                     Describe1: makeEl,
                     Describe2: modelEl,
                     Describe3: colorEl,
                     Describe4: yearEl,
-					Describe7: VINinputEl,
+                    Describe7: VINinputEl,
                 }
             });
         }
@@ -1396,14 +1391,13 @@ App.onPageInit('asset.settings', function(page) {
         if (this.value.length == 17 && $$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
             checkVinNumber({
-				//getVehicleDetailsByVin({
                 VIN: this.value,
                 inputs: {
                     Describe1: makeEl,
                     Describe2: modelEl,
                     Describe3: colorEl,
                     Describe4: yearEl,
-					Describe7: VINinputEl,
+                    Describe7: VINinputEl,
                 }
             });
         }
@@ -2159,10 +2153,8 @@ function toIndex() {
     });
 }
 
-function submitSearchForm(input = false) {
-	if (!input) {
-		input = $$('.formSearchDevice input[name="searchInput"');
-	}    
+function submitSearchForm() {
+    var input = $$('.formSearchDevice input[name="searchInput"');
 
     if (input.val()) {
 
@@ -2359,7 +2351,6 @@ function checkVinNumber(params){
 // installation notice page
 App.onPageInit('asset.installation.notice', function(page) {
 
-setTimeout(function () { 
     $$('.upload_photo, .asset_img img').on('click', function(e) {
         App.actions(cameraButtons);
     });
@@ -2391,7 +2382,6 @@ setTimeout(function () {
         if ($$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
             checkVinNumber({
-			//getVehicleDetailsByVin({
                 VIN: this.value,
                 inputs: {
                     Describe1: makeEl,
@@ -2409,7 +2399,6 @@ setTimeout(function () {
         if (this.value.length == 17 && $$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
             checkVinNumber({
-			//getVehicleDetailsByVin({
                 VIN: this.value,
                 inputs: {
                     Describe1: makeEl,
@@ -2528,12 +2517,10 @@ setTimeout(function () {
             }
 
         }
-		
-        //console.log(Data);//&& Data.VinNumber && Data.StockNumber
+        console.log(Data);//&& Data.VinNumber && Data.StockNumber
         if (Data.DealerToken && Data.Name && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
             App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
-					console.log(result);
                     if (result.MajorCode == '000') {
                         mainView.router.back();
                     } else {
@@ -2555,7 +2542,6 @@ setTimeout(function () {
 
 
 
-				}, 5000);	
 
 
 });
@@ -2737,14 +2723,14 @@ function setFitmentOptions(optionsArry) {
 
 
 function loadInstallNotice() {
-    /*var today = new Date();
+    var today = new Date();
     var year = today.getFullYear();
     var month = today.getMonth() + 1;
     month = month < 10 ? '0' + month : month;
     var day = today.getDate();
 
     var todayStr = year + '-' + month + '-' + day;
-	*/
+
     var data = {
         "Code": getUserinfo().code,
         "Id": TargetAsset.Id,
@@ -2765,35 +2751,31 @@ function loadInstallNotice() {
 
                 getDefaultParams(asset.IMEI);
 
-				//App.alert(TargetAsset.IMEI);
 
-					mainView.router.load({
-						url: 'resources/templates/asset.installation.notice.html',
-						context: {
-							IMEI: TargetAsset.IMEI,
-							IMSI: TargetAsset.IMSI,
-							Type: TargetAsset.Type,
-							Provider: getUserinfo().customerName,
-							Customer: TargetAsset.Customer,
-							AssetName: TargetAsset.Name,
-							//Date: todayStr,
-							Describe7: asset.Describe7,
-							LicensePlate: asset.TagName,
-							Describe1: asset.Describe1,
-							Describe2: asset.Describe2,
-							Describe3: asset.Describe3,
-							Describe4: asset.Describe4,
-							Odometer: asset.InitMilage,
-							Unit: asset.Unit,
-							InstallPosition: asset.InstallPosition,
-							FitmentOpt: asset.FitmentOpt,
-							FitmentOptCustom: asset.Describe6,
-							AssetImg: AssetImg,
-						}
-					});
-				
-                				 
-				
+                mainView.router.load({
+                    url: 'resources/templates/asset.installation.notice.html',
+                    context: {
+                        IMEI: TargetAsset.IMEI,
+                        IMSI: TargetAsset.IMSI,
+                        Type: TargetAsset.Type,
+                        Provider: getUserinfo().customerName,
+                        Customer: TargetAsset.Customer,
+                        AssetName: TargetAsset.Name,
+                        Date: todayStr,
+                        Describe7: asset.Describe7,
+                        LicensePlate: asset.TagName,
+                        Describe1: asset.Describe1,
+                        Describe2: asset.Describe2,
+                        Describe3: asset.Describe3,
+                        Describe4: asset.Describe4,
+                        Odometer: asset.InitMilage,
+                        Unit: asset.Unit,
+                        InstallPosition: asset.InstallPosition,
+                        FitmentOpt: asset.FitmentOpt,
+                        FitmentOptCustom: asset.Describe6,
+                        AssetImg: AssetImg,
+                    }
+                });
             } else {
                 App.alert(LANGUAGE.PROMPT_MSG013);
             }
@@ -4266,6 +4248,7 @@ function getAssetImg(params, imgFor) {
 
 function getVehicleDetailsByVin(params) {
     if (params && params.VIN) {
+
         var container = $$('body');
         if (container.children('.progressbar, .progressbar-infinite').length) return; //don't run all this if there is a current progressbar loading
         App.showProgressbar(container);

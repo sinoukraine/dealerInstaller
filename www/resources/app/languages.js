@@ -191,7 +191,7 @@ window.LanguagePackages = {
 
         "ASSET_INSTALLATION_MSG01": "Vin",
         "ASSET_INSTALLATION_MSG02": "IMEI",
-        "ASSET_INSTALLATION_MSG03": "Name / Installer ID",
+        "ASSET_INSTALLATION_MSG03": "Asset Name / Registration",
         "ASSET_INSTALLATION_MSG04": "Stock Number",
         "ASSET_INSTALLATION_MSG05": "Dealer Group",
         "ASSET_INSTALLATION_MSG06": "Asset Type",
