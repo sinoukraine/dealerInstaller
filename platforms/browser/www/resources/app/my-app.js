@@ -2308,7 +2308,7 @@ function loadPageActivation(planCode) {
 
 // installation notice page
 App.onPageInit('asset.installation.notice', function(page) {
-/*
+
     $$('.upload_photo, .asset_img img').on('click', function(e) {
         App.actions(cameraButtons);
     });
@@ -2473,10 +2473,13 @@ App.onPageInit('asset.installation.notice', function(page) {
             }
 
         }
+		
         //console.log(Data);//&& Data.VinNumber && Data.StockNumber
         if (Data.DealerToken && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
             App.showPreloader();
-            JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
+            App.alert('ok');                    
+            App.hidePreloader();
+            /*JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
 					console.log(result);
                     if (result.MajorCode == '000') {
                         mainView.router.back();
@@ -2489,7 +2492,7 @@ App.onPageInit('asset.installation.notice', function(page) {
                     App.hidePreloader();
                     App.alert(LANGUAGE.COM_MSG02);
                 }
-            );
+            );*/
         } else {
             console.log('no');
             App.alert('Please, fill in mandatory fields');
@@ -2497,7 +2500,7 @@ App.onPageInit('asset.installation.notice', function(page) {
 
     });
 
-*/
+
 
 
 
