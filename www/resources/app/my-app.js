@@ -2388,7 +2388,7 @@ App.onPageInit('asset.installation.notice', function(page) {
                     Describe2: modelEl,
                     Describe3: colorEl,
                     Describe4: yearEl,
-                    VinNumber: VINinputEl,
+                    Describe7: VINinputEl,
                 }
             });
         }
@@ -2405,7 +2405,7 @@ App.onPageInit('asset.installation.notice', function(page) {
                     Describe2: modelEl,
                     Describe3: colorEl,
                     Describe4: yearEl,
-                    VinNumber: VINinputEl,
+                    Describe7: VINinputEl,
                 }
             });
         }
