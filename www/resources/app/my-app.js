@@ -1351,6 +1351,7 @@ App.onPageInit('asset.commands', function(page) {
 
 App.onPageInit('asset.settings', function(page) {
 
+	setTimeout(function () { 
     var sendSetting = $$(page.container).find('.sendSetting');
     //var showBlockControll = $$(page.container).find('.showBlockControll');
 
@@ -1393,7 +1394,7 @@ App.onPageInit('asset.settings', function(page) {
 
 
 
-    VINinputEl.on('blur change', function() {
+    VINinputEl.on('touchleave touchcancel', function() {
         if ($$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
             checkVinNumber({
@@ -1532,6 +1533,8 @@ App.onPageInit('asset.settings', function(page) {
             }
         );
     });
+	
+	}, 5000);
 });
 
 App.onPageInit('client.details', function(page) {
@@ -2416,7 +2419,7 @@ setTimeout(function () {
 
 
 
-    VINinputEl.on('blur change', function() {
+    VINinputEl.on('touchleave touchcancel', function() {
         if ($$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
             checkVinNumber({
