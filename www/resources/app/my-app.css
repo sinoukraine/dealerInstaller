@@ -1285,3 +1285,7 @@ select {
 .list-block .item-title.label+.item-input {
     margin-left: 0px;
 }
+
+.display-none{
+	display: none;
+}

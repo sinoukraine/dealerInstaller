@@ -1859,6 +1859,7 @@ function clearUserInfo() {
     //var MinorToken = userInfo.MinorToken;      
     //var MajorToken = userInfo.MajorToken;
     var pushList = getNotificationList();
+    var elemRc = localStorage.elem_rc_flag;
 
     //window.PosMarker = {};
     TargetAsset = {};
@@ -1866,7 +1867,10 @@ function clearUserInfo() {
     $$('.searchClear').click();
 
     $$('.remaining_counter').html('---');
-
+	
+	if (elemRc) {
+        localStorage.elem_rc_flag = 1;
+    }
 
     if ($$('.page_index .page-content').hasClass('first_login')) {
 
@@ -1880,6 +1884,9 @@ function clearUserInfo() {
 
     localStorage.clear();
 
+	if (elemRc) {
+        localStorage.elem_rc_flag = 1;
+    }
 
     if (pushList) {
         localStorage.setItem("COM.QUIKTRAK.LIVE.NOTIFICATIONLIST.INSTALLER", JSON.stringify(pushList));
@@ -1973,6 +1980,11 @@ function login() {
                     localStorage.ACCOUNT = account.val();
                     localStorage.PASSWORD = password.val();
                 }
+				
+				if (result.Data.elemRc) {
+                    localStorage.elem_rc_flag = 1;
+                }
+				
                 account.val(null);
                 password.val(null);
                 setUserinfo(result.Data);
@@ -3025,6 +3037,30 @@ function loadPageStatus(data) {
         context: data,
 
     });
+}
+
+var elem_rc =   '<li class="item-content list-panel-all close-panel " data-page="user.recharge.credit" id="menuRecharge" style="display:none;">' +
+                    '<div class="item-media">' +
+                        '<i class="f7-icons icon-other-payment"></i>' +
+                    '</div>' +
+                    '<div class="item-inner">' +
+                        '<div class="item-title">'+ LANGUAGE.MENU_MSG03+ '</div>' +
+                    '</div>' +
+                '</li>';
+$$(elem_rc).insertAfter('#menuSettings');
+
+elem_rc =   '<div class="menu_remainings" style="display:none;">' +
+                LANGUAGE.COM_MSG17+': <span class="remaining_counter">---</span> '+ LANGUAGE.COM_MSG18 +
+            '</div>';
+$$(elem_rc).insertAfter('#menu');
+
+function initExtend(){ 
+    if ($$("#menuRecharge").length !== 0 && localStorage.elem_rc_flag == 1) {
+        $$('body').find('#menuRecharge').css('display', 'flex');
+    }    
+    if ($$(".menu_remainings").length !== 0 && localStorage.elem_rc_flag == 1) {
+        $$('body').find('.menu_remainings').css('display', 'block');
+    }     
 }
 
 function loadPageClientDetails(data) {
