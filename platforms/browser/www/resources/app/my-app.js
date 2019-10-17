@@ -1394,7 +1394,7 @@ App.onPageInit('asset.settings', function(page) {
 
 
 
-    VINinputEl.on('touchleave touchcancel', function() {
+    VINinputEl.on('blur change touchleave touchcancel', function() {
         if ($$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
             checkVinNumber({
@@ -2419,7 +2419,7 @@ setTimeout(function () {
 
 
 
-    VINinputEl.on('touchleave touchcancel', function() {
+    VINinputEl.on('blur change touchleave touchcancel', function() {
         if ($$(this).data('prev-val') != this.value) {
             $$(this).data('prev-val', this.value);
             checkVinNumber({
