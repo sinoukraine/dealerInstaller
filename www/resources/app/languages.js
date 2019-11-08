@@ -192,6 +192,7 @@ window.LanguagePackages = {
         "ASSET_SETTINGS_MSG55": "Immobilizer",
         "ASSET_SETTINGS_MSG56": "Custom",
         "ASSET_SETTINGS_MSG57": "Fitment Option Custom",
+        "ASSET_SETTINGS_MSG58": "Stock Number",
 
         "ASSET_INSTALLATION_MSG01": "Vin",
         "ASSET_INSTALLATION_MSG02": "IMEI",
