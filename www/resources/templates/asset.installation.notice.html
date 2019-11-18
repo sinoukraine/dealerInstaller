@@ -35,7 +35,7 @@
                 <li class="item-content">
                     <div class="item-media"> <i class="f7-icons icon-other-service-details"></i></div>
                     <div class="item-inner">
-                        <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG01}}<!--<span class="color-red">*</span>--></div>
+                        <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG01}}<span class="color-red">*</span></div>
                         <div class="item-input">
                             <input type="text" placeholder="{{@global.LANGUAGE.ASSET_INSTALLATION_MSG01}}" name="vinNumber" value="{{vinNumber}}" data-prev-val="{{Describe7}}" maxlength="25" class="">
                             <i class="f7-icons icon-scan color-red scanBarCode"></i>
@@ -54,16 +54,7 @@
                 <li class="item-content">
                     <div class="item-media"></div>
                     <div class="item-inner">
-                        <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG03}}<span class="color-red">*</span></div>
-                        <div class="item-input">
-                            <input type="text" placeholder="{{@global.LANGUAGE.ASSET_INSTALLATION_MSG03}}" name="registration" value="{{registration}}" maxlength="200" class="">
-                        </div>
-                    </div>
-                </li>
-                <li class="item-content">
-                    <div class="item-media"></div>
-                    <div class="item-inner">
-                        <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG04}}<!--<span class="color-red">*</span>--></div>
+                        <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG04}}<span class="color-red">*</span></div>
                         <div class="item-input">
                             <input type="text" placeholder="{{@global.LANGUAGE.ASSET_INSTALLATION_MSG04}}" name="stockNumber" value="{{stockNumber}}" maxlength="200" class="">
                             <i class="f7-icons icon-scan color-red scanBarCode"></i>
@@ -136,7 +127,7 @@
                     </div>
                 </li>
 
-                <li class="item-content">
+                <li class="item-content display-none">
                     <div class="item-media"><i class="f7-icons icon-menu-user-settings"></i></div>
                     <div class="item-inner">
                         <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG11}}<span class="color-red">*</span></div>
@@ -153,8 +144,37 @@
                         </div>
                     </div>
                 </li>
-
+				
+				<li class="item-content">
+                    <div class="item-media"></div>
+                    <div class="item-inner">
+                        <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG19}}<span class="color-red">*</span></div>
+                        <div class="item-input dflex">
+                            <select name="assetCondition" data-set="{{assetCondition}}">  
+                                <option value="0">Select Asset Condition</option>  
+								<option value="new">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG21}}</option>
+                                <option value="used">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG22}}</option>
+                                <option value="other">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG23}}</option>                      
+                            </select>
+                            <i class="f7-icons icon-arrow-drop-down select_arrow"></i>
+                        </div>
+                    </div>
+                </li>
+				
                 <li class="item-content">
+                    <div class="item-media"></div>
+                    <div class="item-inner">
+                        <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG20}}<span class="color-red">*</span></div>
+						<div class="item-input dflex">
+                            <select name="installerCode" data-set="{{installerCode}}" multiple maxlength="1">  
+                                <!--<option value="0">Select Installer Code</option>                   -->   
+                            </select>
+                            <i class="f7-icons icon-arrow-drop-down select_arrow"></i>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="item-content display-none">
                     <div class="item-media"></div>
                     <div class="item-inner">
                         <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG12}}<span class="color-red">*</span></div>
@@ -173,7 +193,16 @@
                 </li>
 
 
-                <li>
+                <li class="item-content">
+                    <div class="item-media"></div>
+                    <div class="item-inner">
+                        <div class="item-title label">{{@global.LANGUAGE.ASSET_INSTALLATION_MSG03}}<!--<span class="color-red">*</span>--></div>
+                        <div class="item-input">
+                            <input type="text" placeholder="{{@global.LANGUAGE.ASSET_INSTALLATION_MSG03}}" name="registration" value="{{registration}}" maxlength="200" class="">
+                        </div>
+                    </div>
+                </li>
+                <li class="display-none">
                     <div class="item-content">
                         <div class="item-media"></div>
                         <div class="item-inner">
@@ -191,7 +220,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="item-content fitment_opt_custom_wrapper">
+                <li class="display-none item-content fitment_opt_custom_wrapper">
                     <div class="item-media"></div>
                     <div class="item-inner">
                         <div class="item-title label">Fitment Option Custom</div>

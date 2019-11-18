@@ -212,6 +212,11 @@ window.LanguagePackages = {
         "ASSET_INSTALLATION_MSG16": "Submit",
         "ASSET_INSTALLATION_MSG17": "* - fields are required",
         "ASSET_INSTALLATION_MSG18": "Installation Notice",
+        "ASSET_INSTALLATION_MSG19": "Asset Condition",
+        "ASSET_INSTALLATION_MSG20": "Installer ID",
+        "ASSET_INSTALLATION_MSG21": "New",
+        "ASSET_INSTALLATION_MSG22": "Used",
+        "ASSET_INSTALLATION_MSG23": "Other",
 
 
 

@@ -4,6 +4,10 @@ body {
     font-family: "Roboto-Regular";
 }
 
+.display-none{
+	display: none;
+}
+
 .color-red {
     color: #F96868 !important;
 }

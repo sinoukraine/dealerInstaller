@@ -307,6 +307,10 @@ API_URL.URL_GET_DETAILS_BY_VIN = "http://ss.sinopacific.com.ua/vin/v1/";
 API_URL.URL_INSTALLATION_NOTICE = 'http://api.m2mglobaltech.com/Common/v1/Activation/Install';
 API_URL.URL_VERIFY = 'https://api.m2mglobaltech.com/Common/V1/Activation/Verify';
 API_URL.URL_SSP = 'https://api.m2mglobaltech.com/Common/V1/Activation/SSP';
+
+//API_URL.URL_USER_LIST_BY_ROLES = 'https://api.m2mglobaltech.com/QuikTrak/V1/User/GetUserListByRoles';
+API_URL.URL_USER_LIST_BY_ROLES = "https://api.m2mglobaltech.com/QuikTrak/V1/User/GetUserListByRoles?MajorToken={0}&Roles={1}";
+
 API_URL.URL_EDIT_ASSET = API_DOMIAN4 + "AssetEdit?MajorToken={0}&MinorToken={1}&imei={2}&name={3}&describe1={4}&describe2={5}&describe3={6}&describe4={7}&photo={8}&alias&";
 
 
@@ -2506,6 +2510,8 @@ App.onPageInit('asset.installation.notice', function(page) {
             "ServiceProfile": $$(page.container).find('select[name="servicePlan"]').val(),
             "InstallLocation": $$(page.container).find('input[name="installNotice"]').val(),
             "Notes": $$(page.container).find('textarea[name="Notes"]').val(),
+			"AssetCondition": $$(page.container).find('select[name="assetCondition"]').val(),
+			"InstallerCode ": $$(page.container).find('select[name="installerCode"]').val(),
         };
         if (fitmentOptSelect.val()) {
             if (fitmentOptSelect.val() != 'D') {
@@ -2515,10 +2521,10 @@ App.onPageInit('asset.installation.notice', function(page) {
                     Data.Fitment = $$(page.container).find('input[name="FitmentOptCustom"]').val();
                 }
             }
-
+getass
         }
-        console.log(Data);//&& Data.VinNumber && Data.StockNumber
-        if (Data.DealerToken && Data.Name && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4 && Data.Solution && Data.ServiceProfile) {
+        //&& Data.Name && Data.Solution && Data.ServiceProfile
+        if (Data.DealerToken && Data.InstallerCode && Data.VinNumber && Data.StockNumber  && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4) {
             App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
                     if (result.MajorCode == '000') {
@@ -2603,7 +2609,8 @@ function setDefaultData(data) {
         $$('[name="dealerToken"]').val(data.DEALER_TOKEN);
         $$('[name="deviceType"]').val(data.DEVICETYPE);
 
-
+		getUserListWithCurrent(dealerToken);
+		
         if (deviceType && deviceType != 'NONE') {
             getAdditionalData({ ProductCode: deviceType, IMEI: IMEI, DealerToken: dealerToken, SolutionCode: "Loc8" });
         } else {
@@ -2612,6 +2619,29 @@ function setDefaultData(data) {
     }
 }
 
+//select user list with current user code
+function getUserListWithCurrent(data) {
+	
+	var url = API_URL.URL_USER_LIST_BY_ROLES.format(data, 4);
+
+    JSON1.request(url,     
+        function(result) {
+            console.log(result);
+            if (result.MajorCode == '000') {
+                if (result.Data ) {//&& result.Data.Solutions && result.Data.Solutions.length
+                    setUserListWithCurrent(result.Data, data);
+                } else {
+                    App.alert('There is no Installer Id for this IMEI');
+                }
+
+            }
+        },
+        function() {
+            App.hidePreloader();
+            // App.alert(LANGUAGE.COM_MSG02);
+        }
+    );
+}
 
 // достаем инфу (солюшен, сервис)
 function getAdditionalData(data) {
@@ -2642,6 +2672,8 @@ function getAdditionalData(data) {
             App.hidePreloader();
             // App.alert(LANGUAGE.COM_MSG02);
         }
+		
+		
     );
 }
 
@@ -2677,6 +2709,9 @@ function setSolutionType(solutions) {
 }
 
 
+
+
+
 // записываем сервис план
 function setServicePlan(service) {
     let serviceSelect = $$('[name="servicePlan"]');
@@ -2691,8 +2726,6 @@ function setServicePlan(service) {
     }
 }
 
-
-
 // записываем assetTypes
 function setAssetType(assetType) {
     let assetTypeSelect = $$('[name="assetType"]');
@@ -2703,6 +2736,27 @@ function setAssetType(assetType) {
             optionsHTML += '<option value="' + val + '" >' + val + '</option>';
         });
         assetTypeSelect.html(optionsHTML);
+    }
+
+}
+
+// устанавливаем список инсталлеров с текущим id
+function setUserListWithCurrent(userList, currentId) {
+    let installerCodeSelect = $$('[name="installerCode"]');
+	
+	var userInfo = getUserinfo();    
+    
+	if (userList) {
+        let optionsHTML = '';
+		let isSelected = '';
+        $.each(userList, function(key, val) {
+			if(userInfo.userCode == val.Code){
+				isSelected = 'selected';
+			}
+            optionsHTML += '<option value="' + val.Code + '" "' + isSelected + '">' + val.FirstName + '</option>';
+        });
+		//optionsHTML = '<option value="0" ">No Installer Id is selected</option>' + optionsHTML;
+        installerCodeSelect.html(optionsHTML);
     }
 
 }
@@ -2750,7 +2804,7 @@ function loadInstallNotice() {
                 }
 
                 getDefaultParams(asset.IMEI);
-
+				console.log('^^',asset,'^^');
 
                 mainView.router.load({
                     url: 'resources/templates/asset.installation.notice.html',
@@ -2762,7 +2816,7 @@ function loadInstallNotice() {
                         Customer: TargetAsset.Customer,
                         AssetName: TargetAsset.Name,
                         Date: todayStr,
-                        Describe7: asset.Describe7,
+                        //Describe7: asset.Describe7,
                         LicensePlate: asset.TagName,
                         Describe1: asset.Describe1,
                         Describe2: asset.Describe2,
@@ -2773,7 +2827,11 @@ function loadInstallNotice() {
                         InstallPosition: asset.InstallPosition,
                         FitmentOpt: asset.FitmentOpt,
                         FitmentOptCustom: asset.Describe6,
-                        AssetImg: AssetImg,
+                        AssetImg: AssetImg,						
+						stockNumber: asset.StockNumber,		
+						vinNumber: asset.Describe7,
+						registration: asset.Name,
+						installNotice: asset.InstallPosition,
                     }
                 });
             } else {
@@ -2861,6 +2919,7 @@ function loadPageSettings() {
         }
     );
 }
+
 
 
 function loadPageVerification(data) {
@@ -4028,6 +4087,7 @@ function saveImg() {
     $$('.asset_img img').attr('src', resImg);
 
     // в списке вставляем что вернул кроппер
+	console.log('##',TargetAsset,'##');
     if (TargetAsset.IMEI) {
         $$('.assetList li[data-imei="' + TargetAsset.IMEI + '"] .item-media img').attr('src', resImg);
     }
