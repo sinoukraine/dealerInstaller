@@ -4113,6 +4113,7 @@ function saveImg() {
             result = typeof(result) == 'string' ? eval("(" + result + ")") : result;
             if (result.MajorCode == "000") {
                 TargetAsset.ASSET_IMG = result.Data;
+                App.alert('Ok');
             } else {
                 App.alert('Something wrong');
             }
