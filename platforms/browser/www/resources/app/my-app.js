@@ -4120,7 +4120,7 @@ function saveImg() {
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             App.hidePreloader();
-            App.alert(assetImg.data);//LANGUAGE.COM_MSG02
+            App.alert(API_URL.URL_PHOTO_UPLOAD);//LANGUAGE.COM_MSG02
         }
     });
 
