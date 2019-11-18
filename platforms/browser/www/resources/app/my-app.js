@@ -288,7 +288,7 @@ API_URL.URL_GET_VERIFY2 = API_DOMIAN1 + "Client/Verfiy2";
 API_URL.URL_GET_VERIFY3 = API_DOMIAN1 + "Client/Verfiy3";
 API_URL.URL_SENT_NOTIFY = API_DOMIAN1 + "Client/SentNotify";
 API_URL.URL_EDIT_DEVICE = API_DOMIAN1 + "Client/EditAsset";
-API_URL.URL_PHOTO_UPLOAD = "http://upload.quiktrak.co/image/Upload";
+API_URL.URL_PHOTO_UPLOAD = "https://upload.quiktrak.co/image/Upload";
 
 API_URL.URL_EDIT_ACCOUNT = API_DOMIAN3 + "User/Edit?MajorToken={0}&MinorToken={1}&FirstName={2}&SubName={3}&Mobile={4}&Phone={5}&EMail={6}";
 API_URL.URL_RESET_PASSWORD = API_DOMIAN3 + "User/Password?MinorToken={0}&oldpwd={1}&newpwd={2}";
@@ -4120,7 +4120,7 @@ function saveImg() {
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             App.hidePreloader();
-            App.alert(API_URL.URL_PHOTO_UPLOAD);//LANGUAGE.COM_MSG02
+            App.alert(LANGUAGE.COM_MSG02);//
         }
     });
 
