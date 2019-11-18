@@ -4087,7 +4087,6 @@ function saveImg() {
     $$('.asset_img img').attr('src', resImg);
 
     // в списке вставляем что вернул кроппер
-	console.log('##',TargetAsset,'##');
     if (TargetAsset.IMEI) {
         $$('.assetList li[data-imei="' + TargetAsset.IMEI + '"] .item-media img').attr('src', resImg);
     }
@@ -4121,7 +4120,7 @@ function saveImg() {
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             App.hidePreloader();
-            App.alert(LANGUAGE.COM_MSG02);
+            App.alert(assetImg.id);//LANGUAGE.COM_MSG02
         }
     });
 
