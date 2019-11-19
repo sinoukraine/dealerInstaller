@@ -1488,9 +1488,9 @@ App.onPageInit('asset.settings', function(page) {
             "Attr7": $$(page.container).find('input[name="Describe7"]').val(),
             "InstallPosition": $$(page.container).find('input[name="InstallPosition"]').val(),
             "RemoteImmobilise": fitmentOptSelectedArr.toString(),
-            "Photo": TargetAsset.ASSET_IMG,
+            //"Photo": TargetAsset.ASSET_IMG,
             "StockNumber": $$(page.container).find('input[name="StockNumber"]').val(),
-
+			"Icon": TargetAsset.ASSET_IMG,
 
         };
         if (fitmentOptSelectedArr.indexOf('D') != -1) {
@@ -2512,6 +2512,7 @@ App.onPageInit('asset.installation.notice', function(page) {
             "Notes": $$(page.container).find('textarea[name="Notes"]').val(),
 			"AssetCondition": $$(page.container).find('select[name="assetCondition"]').val(),
 			"InstallerCode ": $$(page.container).find('select[name="installerCode"]').val(),
+			"Icon": TargetAsset.ASSET_IMG,
         };
         if (fitmentOptSelect.val()) {
             if (fitmentOptSelect.val() != 'D') {
@@ -4110,7 +4111,7 @@ function saveImg() {
             App.hidePreloader();
             var res = JSON.stringify(result);
             // alert(res);
-			App.alert(res);
+			//App.alert(res);
             result = typeof(result) == 'string' ? eval("(" + result + ")") : result;
             if (result.MajorCode == "000") {
                 TargetAsset.ASSET_IMG = result.Data;
