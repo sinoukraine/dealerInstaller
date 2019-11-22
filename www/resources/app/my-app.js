@@ -1488,9 +1488,9 @@ App.onPageInit('asset.settings', function(page) {
             "Attr7": $$(page.container).find('input[name="Describe7"]').val(),
             "InstallPosition": $$(page.container).find('input[name="InstallPosition"]').val(),
             "RemoteImmobilise": fitmentOptSelectedArr.toString(),
-            //"Photo": TargetAsset.ASSET_IMG,
+            "Photo": TargetAsset.ASSET_IMG,
             "StockNumber": $$(page.container).find('input[name="StockNumber"]').val(),
-			"Icon": TargetAsset.ASSET_IMG,
+			//"Icon": TargetAsset.ASSET_IMG,
 
         };
         if (fitmentOptSelectedArr.indexOf('D') != -1) {
@@ -2522,10 +2522,9 @@ App.onPageInit('asset.installation.notice', function(page) {
                     Data.Fitment = $$(page.container).find('input[name="FitmentOptCustom"]').val();
                 }
             }
-getass
         }
         //&& Data.Name && Data.Solution && Data.ServiceProfile
-        if (Data.DealerToken && Data.InstallerCode && Data.VinNumber && Data.StockNumber  && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4) {
+        if (Data.DealerToken && Data.VinNumber && Data.StockNumber  && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4) {
             App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
                     if (result.MajorCode == '000') {
@@ -4112,7 +4111,6 @@ function saveImg() {
             var res = JSON.stringify(result);
             // alert(res);
 			//App.alert(res);
-			
             result = typeof(result) == 'string' ? eval("(" + result + ")") : result;
             if (result.MajorCode == "000") {
                 TargetAsset.ASSET_IMG = result.Data;
