@@ -308,6 +308,8 @@ API_URL.URL_INSTALLATION_NOTICE = 'http://api.m2mglobaltech.com/Common/v1/Activa
 API_URL.URL_VERIFY = 'https://api.m2mglobaltech.com/Common/V1/Activation/Verify';
 API_URL.URL_SSP = 'https://api.m2mglobaltech.com/Common/V1/Activation/SSP';
 
+API_URL.URL_GET_ASSET_INFO = 'https://api.m2mglobaltech.com/Common/v1/Activation/GetAssetsInfo';
+
 //API_URL.URL_USER_LIST_BY_ROLES = 'https://api.m2mglobaltech.com/QuikTrak/V1/User/GetUserListByRoles';
 API_URL.URL_USER_LIST_BY_ROLES = "https://api.m2mglobaltech.com/QuikTrak/V1/User/GetUserListByRoles?MajorToken={0}&Roles={1}";
 
@@ -853,7 +855,7 @@ App.onPageInit('user.profile', function(page) {
 
         App.showPreloader();
         JSON1.request(url, function(result) {
-                console.log(result);
+                
                 if (result.MajorCode == '000') {
 
                     userInfo.firstName = result.Data.User.FirstName;
@@ -895,10 +897,10 @@ App.onPageInit('user.password', function(page) {
                     encodeURIComponent(password.old),
                     encodeURIComponent(password.new)
                 );
-                console.log(url);
+                
                 App.showPreloader();
                 JSON1.request(url, function(result) {
-                        console.log(result);
+                      
                         if (result.MajorCode == '000') {
                             App.alert(LANGUAGE.PROMPT_MSG003, function() {
                                 logout();
@@ -1496,10 +1498,10 @@ App.onPageInit('asset.settings', function(page) {
         if (fitmentOptSelectedArr.indexOf('D') != -1) {
             data.Attr6 = $$(page.container).find('input[name="FitmentOptCustom"]').val();
         }
-        console.log(data);
+  
         App.showPreloader();
         JSON1.requestPost(API_URL.URL_EDIT_DEVICE, data, function(result) {
-                console.log(result);
+                
                 if (result.MajorCode == '000') {
                     mainView.router.back();
                 } else {
@@ -1536,8 +1538,7 @@ App.onPageInit('client.details', function(page) {
 
 
         JSON1.requestPost(API_URL.URL_SENT_NOTIFY, data, function(result) {
-                console.log(result);
-                console.log(data);
+               
                 if (result.MajorCode == '000') {
 
                     loadPageVerification(result.Data);
@@ -1633,7 +1634,6 @@ function loadPageStatusNew(data) {
 
 
     let statusObj = JSON.parse(data.Status);
-    console.log(data);
 
     // TargetAsset.IMEI = data.Imei;
     mainView.router.load({
@@ -1677,7 +1677,7 @@ function requestPositionVirify() {
 
         App.showPreloader();
         JSON1.requestPost(API_URL.URL_GET_LIVE_POSITION, data, function(result) {
-                console.log(result);
+               
                 if (result.MajorCode == '000') {
                     var props = result.Data;
                     props.Imei = TargetAsset.IMEI;
@@ -2015,7 +2015,6 @@ function hideKeyboard() {
 
 function getCreditBalance(vsMsg) {
     var userInfo = getUserinfo();
-    console.log(userInfo);
     var data = {
         "MinorToken": userInfo.userCode
     };
@@ -2023,7 +2022,6 @@ function getCreditBalance(vsMsg) {
         App.showPreloader();
     }
     JSON1.requestPost(API_URL.URL_GET_CREDIT, data, function(result) {
-            console.log(result);
             if (result.MajorCode == '000') {
                 updateUserCrefits(result.Data.Credit);
                 userInfo.credit = result.Data.Credit;
@@ -2308,7 +2306,6 @@ function loadPageActivation(planCode) {
 function checkVinNumber(params){
         if (params && params.VIN) {
             var vinLength = params.VIN.length;
-            console.log(vinLength);
             if (vinLength == 18){
                 params.VIN = params.VIN.slice(1);
                 getVehicleDetailsByVin(params);
@@ -2567,7 +2564,7 @@ function getDefaultParams(imei) {
     App.showPreloader();
     JSON1.requestPost(API_URL.URL_VERIFY, data,
         function(result) {
-            console.log(result);
+            
             if (result.MajorCode == '000') {
                 // console.log(result.Data.IMEI);
                 if (result.Data.IMEI == 'ACTIVATED') {
@@ -2612,6 +2609,7 @@ function setDefaultData(data) {
 		getUserListWithCurrent(dealerToken);
 		
         if (deviceType && deviceType != 'NONE') {
+			getAssetInfo({ DealerToken: dealerToken, IMEI: IMEI});
             getAdditionalData({ ProductCode: deviceType, IMEI: IMEI, DealerToken: dealerToken, SolutionCode: "Loc8" });
         } else {
             console.log('device type');
@@ -2626,7 +2624,6 @@ function getUserListWithCurrent(data) {
 
     JSON1.request(url,     
         function(result) {
-            console.log(result);
             if (result.MajorCode == '000') {
                 if (result.Data ) {//&& result.Data.Solutions && result.Data.Solutions.length
                     setUserListWithCurrent(result.Data, data);
@@ -2643,18 +2640,31 @@ function getUserListWithCurrent(data) {
     );
 }
 
+
+// достаем инфу выбранного ассета
+function getAssetInfo(data) {
+    //console.log(data);
+    JSON1.requestPost(API_URL.URL_GET_ASSET_INFO, data,
+        function(result) {
+            console.log(result);
+        },
+        function() {
+        }
+    );
+}
+
 // достаем инфу (солюшен, сервис)
 function getAdditionalData(data) {
     // console.log(data);
     JSON1.requestPost(API_URL.URL_SSP, data,
         function(result) {
-            console.log(result);
             if (result.MajorCode == '000') {
                 if (result.Data && result.Data.ServiceProfiles && result.Data.ServiceProfiles.length && result.Data.Solutions && result.Data.Solutions.length) {
                     if (data.ProductCode) {
                         // && data.SolutionCode
                         setServicePlan(result.Data.ServiceProfiles);
                         setSolutionType(result.Data.Solutions);
+						
                         setAssetType(result.Data.AssetTypes);
                         setLot(result.Data.AssetGroups);
                     } else {
@@ -2729,11 +2739,15 @@ function setServicePlan(service) {
 // записываем assetTypes
 function setAssetType(assetType) {
     let assetTypeSelect = $$('[name="assetType"]');
-
+	
     if (assetType) {
         let optionsHTML = '';
+		let isSelected = '';
         $.each(assetType, function(key, val) {
-            optionsHTML += '<option value="' + val + '" >' + val + '</option>';
+			if(1==2){
+				isSelected = 'selected';
+			}
+            optionsHTML += '<option value="' + val + '" "' + isSelected + '">' + val + '</option>';
         });
         assetTypeSelect.html(optionsHTML);
     }
@@ -2753,7 +2767,7 @@ function setUserListWithCurrent(userList, currentId) {
 			if(userInfo.userCode == val.Code){
 				isSelected = 'selected';
 			}
-            optionsHTML += '<option value="' + val.Code + '" "' + isSelected + '">' + val.FirstName + '</option>';
+            optionsHTML += '<option value="' + val.Code + '" ' + isSelected + '>' + val.FirstName + ' ' + val.SubName + '</option>';
         });
 		//optionsHTML = '<option value="0" ">No Installer Id is selected</option>' + optionsHTML;
         installerCodeSelect.html(optionsHTML);
@@ -3038,8 +3052,7 @@ function checkMapExisting() {
 
 
 function loadPageStatus(data) {
-    console.log(data);
-
+ 
     var timeCheck = data.CreateDateTime.indexOf('T');
     if (timeCheck != -1) {
         data.CreateDateTime = moment.utc(data.CreateDateTime).toDate();
@@ -3108,7 +3121,7 @@ function loadSimInfo() {
     };
     App.showPreloader();
     JSON1.requestPost(API_URL.URL_GET_SIM_INFO, data, function(result) {
-            console.log(result);
+            
             if (result.MajorCode == '000') {
                 getAdditionalSimInfo(result.Data);
             } else {
@@ -3132,7 +3145,7 @@ function getAdditionalSimInfo(params) {
     };
     /*App.showPreloader();*/
     JSON1.requestPost(API_URL.URL_GET_SIM_LIST, data, function(result) {
-            console.log(result);
+            
             if (result.MajorCode == '000') {
                 loadSimInfoPage(Object.assign(params, result.Data[0]));
             } else {
@@ -3239,7 +3252,7 @@ function requestStatus() {
 
         App.showPreloader();
         JSON1.requestPost(API_URL.URL_GET_STATUS, data, function(result) {
-                console.log(result);
+               
                 if (result.MajorCode == '000') {
                     turnNotificationOn();
                     App.addNotification({
@@ -3282,7 +3295,7 @@ function requestPositionProtect() {
 
         App.showPreloader();
         JSON1.requestPost(API_URL.URL_GET_PROTECT_POSITION, data, function(result) {
-                console.log(result);
+                
                 if (result.MajorCode == '000') {
                     turnNotificationOn();
                     App.addNotification({
@@ -3317,7 +3330,7 @@ function requestPositionLive() {
 
         App.showPreloader();
         JSON1.requestPost(API_URL.URL_GET_LIVE_POSITION, data, function(result) {
-                console.log(result);
+                
                 if (result.MajorCode == '000') {
                     var props = result.Data;
                     props.Imei = TargetAsset.IMEI;
@@ -3361,7 +3374,7 @@ function requestVerify() {
 
         App.showPreloader();
         JSON1.requestPost(API_URL.URL_GET_VERIFY3, data, function(result) {
-                console.log(result);
+               
                 if (result.MajorCode == '000') {
 
 
@@ -3380,7 +3393,7 @@ function requestVerify() {
 
                 } else if (result.MajorCode == '100') {
                     var msg = LANGUAGE.ASSET_VIRIFICATION_MSG12;
-                    console.log(result.Data);
+                 
                     if (result.Data) {
                         switch (result.Data) {
                             case 'OFFLINE':
@@ -3434,7 +3447,7 @@ function requestImmobilise() {
 
         App.showPreloader();
         JSON1.requestPost(API_URL.URL_SET_IMMOBILISE, data, function(result) {
-                console.log(result);
+                
                 if (result.MajorCode == '000') {
                     turnNotificationOn();
                     App.addNotification({
@@ -3478,7 +3491,7 @@ function requestUnimmobilise() {
 
         App.showPreloader();
         JSON1.requestPost(API_URL.URL_SET_UNIMMOBILISE, data, function(result) {
-                console.log(result);
+                
                 if (result.MajorCode == '000') {
                     turnNotificationOn();
                     App.addNotification({
@@ -3510,13 +3523,13 @@ function requestCommandHistory(params) {
             IMSI: params.IMSI,
             LastDay: params.LastDay,
         };
-        console.log(data);
+     
 
         var container = $$('body');
         if (container.children('.progressbar, .progressbar-infinite').length) return; //don't run all this if there is a current progressbar loading
         App.showProgressbar(container);
         JSON1.requestPost(API_URL.URL_GET_COMMAND_HISTORY, data, function(result) {
-                console.log(result);
+               
                 if (result.MajorCode == '000') {
                     if (result.Data && result.Data.length > 0 && virtualCommandsHistoryList) {
                         //if ( virtualCommandsHistoryList.items.length > 0) {
@@ -3564,7 +3577,6 @@ function getNewNotifications() {
                 //localStorage.notificationChecked = 1;
 
 
-                console.log(result);
 
                 if (result.MajorCode == '000') {
                     var data = result.Data;
@@ -3579,7 +3591,7 @@ function getNewNotifications() {
                         }
                     }
                 } else {
-                    console.log(result);
+                    
                 }
             },
             function() {
@@ -3632,7 +3644,7 @@ function changeAssetNotificationState(device, obj) {
     }
 
     JSON1.requestPost(API_URL.URL_CHANGE_NOTIFICATION_STATUS, data, function(result) {
-            console.log(result);
+           
             if (result.MajorCode == '000') {
                 if (device) {
                     device.data('notifications', data.State);
@@ -4323,7 +4335,7 @@ function getVehicleDetailsByVin(params) {
 
             success: function(result) {
                 App.hideProgressbar();
-                console.log(result);
+                
                 if (result) {
                     var vehicleDetailsArr = [];
 
