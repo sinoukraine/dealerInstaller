@@ -1349,11 +1349,12 @@ App.onPageInit('asset.commands', function(page) {
 
 });
 
-
+App.onPageAfterAnimation('asset.installation.notice', function(page){
+    getDefaultParams($$(page.container).find('[name="IMEI"]').val());
+});
 
 App.onPageInit('asset.settings', function(page) {
-
-	setTimeout(function () { 
+	//setTimeout(function () { 
     var sendSetting = $$(page.container).find('.sendSetting');
     //var showBlockControll = $$(page.container).find('.showBlockControll');
 
@@ -1495,6 +1496,7 @@ App.onPageInit('asset.settings', function(page) {
 
     $$(sendSetting).on('click', function() {
 
+	alert('clicked');
         var data = {
             "Code": getUserinfo().code,
             "Id": TargetAsset.Id,
@@ -1535,7 +1537,7 @@ App.onPageInit('asset.settings', function(page) {
         );
     });
 	
-	}, 5000);
+	//}, 5000);
 });
 
 App.onPageInit('client.details', function(page) {
@@ -2392,7 +2394,7 @@ function checkVinNumber(params){
 // installation notice page
 App.onPageInit('asset.installation.notice', function(page) {
 
-setTimeout(function () { 
+//setTimeout(function () { 
     $$('.upload_photo, .asset_img img').on('click', function(e) {
         App.actions(cameraButtons);
     });
@@ -2409,8 +2411,10 @@ setTimeout(function () {
     let fitmentOptCustomWrapper = $$(page.container).find('.fitment_opt_custom_wrapper');
     let fitmentOptSelectedArr = [];
 
+	
+    //getDefaultParams(IMEI.val());
 
-    var VINinputEl = $$(page.container).find('[name="vinNumber"');
+    var VINinputEl = $$(page.container).find('[name="vinNumber"]');
 
     var makeEl = $$(page.container).find('input[name="Describe1"]');
     var modelEl = $$(page.container).find('input[name="Describe2"]');
@@ -2563,7 +2567,7 @@ setTimeout(function () {
 
         }
 		
-          //Data.Solution && Data.ServiceProfile
+          // && Data.Solution && Data.ServiceProfile
         if (Data.DealerToken && Data.Name && Data.VinNumber && Data.StockNumber  && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4) {
 			App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
@@ -2589,7 +2593,7 @@ setTimeout(function () {
 
 
 
-				}, 5000);	
+				//}, 5000);	
 
 
 });
@@ -2854,7 +2858,7 @@ function loadInstallNotice() {
                     }
                 }
 
-                getDefaultParams(asset.IMEI);
+                //getDefaultParams(asset.IMEI);
 
 				//App.alert(TargetAsset.IMEI);
 
@@ -2867,7 +2871,7 @@ function loadInstallNotice() {
 							Provider: getUserinfo().customerName,
 							Customer: TargetAsset.Customer,
 							AssetName: TargetAsset.Name,
-							Date: todayStr,
+							//Date: todayStr,
 							//Describe7: asset.Describe7,
 							LicensePlate: asset.TagName,
 							Describe1: asset.Describe1,
