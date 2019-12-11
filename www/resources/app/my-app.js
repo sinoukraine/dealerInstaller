@@ -2396,7 +2396,7 @@ setTimeout(function () {
     $$('.upload_photo, .asset_img img').on('click', function(e) {
         App.actions(cameraButtons);
     });
-    let sendInstallNotice = $$(page.container).find('.sendInstallNotice');
+    let sendInstallNotice = $$('body').find('.sendInstallNotice');//$$(page.container)
     let AssetTypeSelect = $$(page.container).find('[name="assetType"]');
     let optionsHTML = '';
     let optionsArry = [];
@@ -2563,8 +2563,8 @@ setTimeout(function () {
 
         }
 		
-          //&& Data.Name && Data.Solution && Data.ServiceProfile
-        if (Data.DealerToken && Data.VinNumber && Data.StockNumber  && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4) {
+          //Data.Solution && Data.ServiceProfile
+        if (Data.DealerToken && Data.Name && Data.VinNumber && Data.StockNumber  && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4) {
 			App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
 					console.log(result);
@@ -2867,8 +2867,8 @@ function loadInstallNotice() {
 							Provider: getUserinfo().customerName,
 							Customer: TargetAsset.Customer,
 							AssetName: TargetAsset.Name,
-							//Date: todayStr,
-							Describe7: asset.Describe7,
+							Date: todayStr,
+							//Describe7: asset.Describe7,
 							LicensePlate: asset.TagName,
 							Describe1: asset.Describe1,
 							Describe2: asset.Describe2,
@@ -2879,7 +2879,11 @@ function loadInstallNotice() {
 							InstallPosition: asset.InstallPosition,
 							FitmentOpt: asset.FitmentOpt,
 							FitmentOptCustom: asset.Describe6,
-							AssetImg: AssetImg,
+							AssetImg: AssetImg,						
+							stockNumber: asset.StockNumber,		
+							vinNumber: asset.Describe7,
+							registration: asset.Name,
+							installNotice: asset.InstallPosition,
 						}
 					});
 				
