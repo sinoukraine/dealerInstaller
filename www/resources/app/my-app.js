@@ -1513,7 +1513,6 @@ App.onPageInit('asset.settings', function(page) {
             "Photo": TargetAsset.ASSET_IMG,
             "StockNumber": $$(page.container).find('input[name="StockNumber"]').val(),
 
-
         };
         if (fitmentOptSelectedArr.indexOf('D') != -1) {
             data.Attr6 = $$(page.container).find('input[name="FitmentOptCustom"]').val();

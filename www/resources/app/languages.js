@@ -221,7 +221,6 @@ window.LanguagePackages = {
 
 
 
-
         "CLIENT_DETAILS_MSG00": "Client Details",
         "CLIENT_DETAILS_MSG01": "Login Name",
         "CLIENT_DETAILS_MSG02": "First Name",
