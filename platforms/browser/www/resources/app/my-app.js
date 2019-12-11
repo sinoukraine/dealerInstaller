@@ -261,7 +261,7 @@ var mainView = App.addView('.view-main', {
     //main: true,
     domCache: true,
     swipeBackPage: false,
-
+   // dynamicNavbar: true,
 });
 
 
@@ -1349,20 +1349,19 @@ App.onPageInit('asset.commands', function(page) {
 
 });
 
-App.onPageAfterAnimation('asset.installation.notice', function(page){
-    getDefaultParams($$(page.container).find('[name="IMEI"]').val());
-});
+
 
 App.onPageInit('asset.settings', function(page) {
 	//setTimeout(function () { 
+       //alert(2);
     var sendSetting = $$(page.container).find('.sendSetting');
-    //var showBlockControll = $$(page.container).find('.showBlockControll');
+    var showBlockControll = $$(page.container).find('.showBlockControll');
 
     $$('.upload_photo, .asset_img img').on('click', function(e) {
         App.actions(cameraButtons);
     });
 
-    let item = {};
+   
     // item.Photo = Photo;
     // let imgInner = $$('.asset_img');
     // let assetImg = getAssetImg(item, { 'assetList': true });
@@ -1382,12 +1381,12 @@ App.onPageInit('asset.settings', function(page) {
     var cardNumber = $$(page.container).find('.card_number');
     var cardHolder = $$(page.container).find('.card_holder');*/
 
-    var fitmentOptSelect = $$(page.container).find('[name="FitmentOpt"]');
+    /*var fitmentOptSelect = $$(page.container).find('[name="FitmentOpt"]');
     var fitmentOptSelectSet = fitmentOptSelect.data("set");
     var fitmentOptCustomWrapper = $$(page.container).find('.fitment_opt_custom_wrapper');
-    var fitmentOptSelectedArr = [];
+    var fitmentOptSelectedArr = [];*/
 
-    var VINinputEl = $$(page.container).find('[name="Describe7"');
+    var VINinputEl = $$(page.container).find('[name="Describe7"]');
 
     var makeEl = $$(page.container).find('input[name="Describe1"]');
     var modelEl = $$(page.container).find('input[name="Describe2"]');
@@ -1434,14 +1433,14 @@ App.onPageInit('asset.settings', function(page) {
     selectUnitSpeed.val(selectUnitSpeed.data("set"));
 
 
-    if (fitmentOptSelectSet) {
+   /* if (fitmentOptSelectSet) {
         if (fitmentOptSelectSet.substr(-1) == ',') {
             fitmentOptSelectSet = fitmentOptSelectSet.slice(0, -1);
         }
         $.each(fitmentOptSelectSet.split(","), function(i, e) {
             fitmentOptSelect.find('option[value="' + e + '"]').prop("selected", true);
         });
-    }
+    }*/
 
 
     /*paymentType.on('change', function(){        
@@ -1474,7 +1473,7 @@ App.onPageInit('asset.settings', function(page) {
         App.actions(cameraButtons);        
     });*/
 
-    fitmentOptSelect.on('change', function() {
+    /*fitmentOptSelect.on('change', function() {
         fitmentOptSelectedArr = [];
 
         $$(this).find('option:checked').each(function() {
@@ -1492,11 +1491,11 @@ App.onPageInit('asset.settings', function(page) {
         fitmentOptCustomWrapper.css('display', 'flex');
     } else {
         fitmentOptCustomWrapper.hide();
-    }
+    }*/
 
     $$(sendSetting).on('click', function() {
 
-	alert('clicked');
+	//alert('clicked');
         var data = {
             "Code": getUserinfo().code,
             "Id": TargetAsset.Id,
@@ -1511,14 +1510,14 @@ App.onPageInit('asset.settings', function(page) {
             "Attr4": $$(page.container).find('input[name="Describe4"]').val(),
             "Attr7": $$(page.container).find('input[name="Describe7"]').val(),
             "InstallPosition": $$(page.container).find('input[name="InstallPosition"]').val(),
-            "RemoteImmobilise": fitmentOptSelectedArr.toString(),
+            //"RemoteImmobilise": fitmentOptSelectedArr.toString(),
             "Photo": TargetAsset.ASSET_IMG,
             "StockNumber": $$(page.container).find('input[name="StockNumber"]').val(),
 
         };
-        if (fitmentOptSelectedArr.indexOf('D') != -1) {
+        /*if (fitmentOptSelectedArr.indexOf('D') != -1) {
             data.Attr6 = $$(page.container).find('input[name="FitmentOptCustom"]').val();
-        }
+        }*/
         console.log(data);
         App.showPreloader();
         JSON1.requestPost(API_URL.URL_EDIT_DEVICE, data, function(result) {
@@ -2391,6 +2390,10 @@ function checkVinNumber(params){
         }
     }
 
+App.onPageAfterAnimation('asset.installation.notice', function(page){
+    getDefaultParams($$(page.container).find('[name="IMEI"]').val());
+});
+
 // installation notice page
 App.onPageInit('asset.installation.notice', function(page) {
 
@@ -2936,10 +2939,10 @@ function loadPageSettings() {
                         AssetImg = 'http://upload.quiktrak.co/Attachment/images/' + asset.Icon + '?' + new Date().getTime();
                     }
                 }
-
+//alert('param');
 
                 mainView.router.load({
-                    url: 'resources/templates/asset.settings.html',
+                    url: 'resources/templates/asset.settings.html?v=1.1',
                     context: {
                         /*IMEI: '<span>'+LANGUAGE.HOME_MSG00+'</span>: '+TargetAsset.IMEI,
                         IMSI: '<span>'+LANGUAGE.HOME_MSG01+'</span>: '+TargetAsset.IMSI,
