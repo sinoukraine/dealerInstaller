@@ -2520,8 +2520,8 @@ App.onPageInit('asset.installation.notice', function(page) {
                 }
             }
         }
-        // && Data.Solution && Data.ServiceProfile
-        if (Data.DealerToken && Data.Name && Data.VinNumber && Data.StockNumber  && Data.Imei && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4) {
+        // && Data.Solution && Data.ServiceProfile && Data.AssetType && Data.Describe1 && Data.Describe2 && Data.Describe3 && Data.Describe4
+        if (Data.DealerToken && Data.Name && Data.VinNumber && Data.StockNumber  && Data.Imei) {
             App.showPreloader();
             JSON1.requestPost(API_URL.URL_INSTALLATION_NOTICE, Data, function(result) {
                     if (result.MajorCode == '000') {
@@ -4232,6 +4232,7 @@ function openBarCodeReader(input) {
                       "Cancelled: " + result.cancelled);*/
                 if (result && result.text) {
                     input.val(result.text);
+					submitSearchForm();
                     input.change(); // fix to trigger onchange / oninput event listener
                 }
 
