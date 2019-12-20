@@ -2495,8 +2495,10 @@ App.onPageInit('asset.installation.notice', function(page) {
             "DealerToken": $$(page.container).find('input[name="dealerToken"]').val(),
             "VinNumber": $$(page.container).find('input[name="vinNumber"]').val(),
             "Imei": $$(page.container).find('input[name="IMEI"]').val(),
-            "Name": $$(page.container).find('input[name="registration"]').val(),
+            //"Name": $$(page.container).find('input[name="registration"]').val(),
             "StockNumber": $$(page.container).find('input[name="stockNumber"]').val(),
+			"Name": $$(page.container).find('input[name="stockNumber"]').val(),
+			"Registration": $$(page.container).find('input[name="stockNumber"]').val(),
             "Lot": $$(page.container).find('select[name="lot"]').val(),
             "AssetType": $$(page.container).find('select[name="assetType"]').val(),
             "Describe1": $$(page.container).find('input[name="Describe1"]').val(),
@@ -2508,7 +2510,7 @@ App.onPageInit('asset.installation.notice', function(page) {
             "InstallLocation": $$(page.container).find('input[name="installNotice"]').val(),
             "Notes": $$(page.container).find('textarea[name="Notes"]').val(),
 			"AssetCondition": $$(page.container).find('select[name="assetCondition"]').val(),
-			"InstallerCode ": $$(page.container).find('select[name="installerCode"]').val(),
+			"InstallerCode": $$(page.container).find('select[name="installerCode"]').val(),
 			"Icon": TargetAsset.ASSET_IMG,
         };
         if (fitmentOptSelect.val()) {
