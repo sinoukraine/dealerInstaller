@@ -2612,7 +2612,7 @@ function setDefaultData(data) {
 		
         if (deviceType && deviceType != 'NONE') {
 			getAssetInfo({ DealerToken: dealerToken, IMEI: IMEI});
-            getAdditionalData({ ProductCode: deviceType, IMEI: IMEI, DealerToken: dealerToken, SolutionCode: "Loc8" });
+            getAdditionalData({ ProductCode: deviceType, IMEI: IMEI, DealerToken: dealerToken, SolutionCode: "Track" });
         } else {
             console.log('device type');
         }
@@ -2710,7 +2710,7 @@ function setSolutionType(solutions) {
     if (solutions) {
         let optionsHTML = '';
         $.each(solutions, function(key, val) {
-            if (val.Code == 'Loc8') {
+            if (val.Code == 'Track') {
                 optionsHTML += '<option value="' + val.Code + '" >' + val.Name + '</option>';
             }
         });
@@ -2732,7 +2732,9 @@ function setServicePlan(service) {
 
         let optionsHTML = '';
         $.each(service, function(key, val) {
-            optionsHTML += '<option value="' + val.Code + '" >' + val.Name + '</option>';
+			if (val.Code == '33ENPEYR38SRC') {
+				optionsHTML += '<option value="' + val.Code + '" >' + val.Name + '</option>';
+			}
         });
         serviceSelect.html(optionsHTML);
     }
